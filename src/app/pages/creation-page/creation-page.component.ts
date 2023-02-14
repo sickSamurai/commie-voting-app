@@ -6,8 +6,8 @@ import { Component } from '@angular/core'
   styleUrls: ['./creation-page.component.scss']
 })
 export class CreationPageComponent {
-  creatingVoting = false
+  votingCreated = false
 
-  showCandidatesForm = () => (this.creatingVoting = true)
-  showVotingForm = () => (this.creatingVoting = false)
+  showCandidatesForm = () => (this.votingCreated = true)
+  showVotingForm = () => (this.votingCreated = false)
 }

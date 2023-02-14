@@ -23,6 +23,7 @@ export class CandidatesFormComponent implements OnDestroy {
       this.candidates.push({ name: this.nameFormControl.value || 'null', votes: 0 })
       this.remainingCandidates -= 1
       this.nameFormControl.reset()
+      this.nameFormControl.markAsUntouched()
     }
   }
 

@@ -1,5 +1,5 @@
 <form (ngSubmit)="addCandidate()" autocomplete="off">
-  <mat-card>
+  <mat-card style="width: 66%">
     <mat-card-header>
       <mat-card-title> Agrega un candidato/a para la votación "{{ votingName }}" </mat-card-title>
       <mat-card-subtitle>{{ remainingCandidatesText }}</mat-card-subtitle>
@@ -17,3 +17,8 @@
     </mat-card-actions>
   </mat-card>
 </form>
+<mat-list role="list">
+  <mat-list-item *ngFor="let candidate of candidates" role="listitem">
+    {{ candidate.name }}
+  </mat-list-item>
+</mat-list>

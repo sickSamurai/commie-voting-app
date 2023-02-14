@@ -23,7 +23,7 @@ export class VotingFormComponent {
     this.votingCreated.emit()
   }
 
-  getFormControlError(formControl: FormControl, min: number) {
+  getFormControlError(formControl: FormControl, min?: number) {
     if (!formControl.errors) return null
     else if (formControl.errors['required']) return 'Campo Requerido'
     else if (formControl.errors['min']) return `El valor mínimo es ${min}`

@@ -1,7 +1,7 @@
-<ng-container *ngIf="creatingVoting; else noCreatingVoting">
+<ng-container *ngIf="votingCreated; else creatingVoting">
   <app-candidates-form></app-candidates-form>
 </ng-container>
 
-<ng-template #noCreatingVoting>
+<ng-template #creatingVoting>
   <app-voting-form (votingCreated)="showCandidatesForm()"></app-voting-form>
 </ng-template>
