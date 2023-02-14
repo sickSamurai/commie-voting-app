@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component } from '@angular/core'
 
 @Component({
   selector: 'app-creation-page',
@@ -6,5 +6,8 @@ import { Component } from '@angular/core';
   styleUrls: ['./creation-page.component.scss']
 })
 export class CreationPageComponent {
+  creatingVoting = false
 
+  showCandidatesForm = () => (this.creatingVoting = true)
+  showVotingForm = () => (this.creatingVoting = false)
 }

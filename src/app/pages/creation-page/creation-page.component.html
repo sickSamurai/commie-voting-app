@@ -1,1 +1,7 @@
-<p>creation-page works!</p>
+<ng-container *ngIf="creatingVoting; else noCreatingVoting">
+  <app-candidates-form></app-candidates-form>
+</ng-container>
+
+<ng-template #noCreatingVoting>
+  <app-voting-form (votingCreated)="showCandidatesForm()"></app-voting-form>
+</ng-template>

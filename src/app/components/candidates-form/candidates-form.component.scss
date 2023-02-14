@@ -1,0 +1,19 @@
+div {
+  height: 100vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+mat-card {
+  width: 66%;
+  display: flex;
+  flex-direction: column;  
+  gap: 24px;
+}
+
+mat-card-content {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
