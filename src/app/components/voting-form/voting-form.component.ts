@@ -23,12 +23,21 @@ export class VotingFormComponent {
     this.votingCreated.emit()
   }
 
-  getFormControlError(formControl: FormControl) {
+  getFormControlError(formControl: FormControl, min: number) {
     if (!formControl.errors) return null
     else if (formControl.errors['required']) return 'Campo Requerido'
-    else if (formControl.errors['min']) return 'El valor mínimo es 1'
+    else if (formControl.errors['min']) return `El valor mínimo es ${min}`
     else if (formControl.errors['max']) return 'Sobrepasaste el valor máximo'
     else return 'Error desconocido'
+  }
+
+  subscribeToPeopleInCensusValueChanges() {
+    this.votingForm.controls.peopleInCensus.valueChanges.subscribe({
+      next: () => {
+        this.votingForm.controls.numberOfCandidates.updateValueAndValidity()
+        this.votingForm.controls.numberOfWinners.updateValueAndValidity()
+      }
+    })
   }
 
   constructor(private votingService: VotingService) {
@@ -44,7 +53,8 @@ export class VotingFormComponent {
         Validators.min(1),
         numberOfWinnersValidator()
       ]),
-      peopleInCensus: new FormControl(0, [Validators.required, Validators.min(1)])
+      peopleInCensus: new FormControl(0, [Validators.required, Validators.min(3)])
     })
+    this.subscribeToPeopleInCensusValueChanges()
   }
 }
