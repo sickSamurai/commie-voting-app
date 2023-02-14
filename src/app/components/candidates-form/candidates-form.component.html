@@ -1,17 +1,19 @@
 <div>
   <mat-card>
     <mat-card-header>
-      <mat-card-title> Agrega un candidato/a ({{ remainingCandidates }} restantes) </mat-card-title>
+      <mat-card-title> Agrega un candidato/a para la votación {{ votingName }} </mat-card-title>
+      <mat-card-subtitle>{{ remainingCandidatesText }}</mat-card-subtitle>
     </mat-card-header>
     <mat-card-content>
       <mat-form-field appearance="fill" color="accent">
         <mat-label>Nombre del candidato/a</mat-label>
+        <input [formControl]="nameFormControl" matInput placeholder="Ana Maria Nates" />
         <mat-hint>¿Como se llama el candidato/a?</mat-hint>
-        <input matInput placeholder="Ana Maria Nates" />
+        <mat-error>Campo Requerido</mat-error>
       </mat-form-field>
     </mat-card-content>
     <mat-card-actions>
-      <button mat-flat-button color="primary">Agregar</button>
+      <button (click)="addCandidate()" mat-flat-button color="primary">Agregar</button>
     </mat-card-actions>
   </mat-card>
 </div>
