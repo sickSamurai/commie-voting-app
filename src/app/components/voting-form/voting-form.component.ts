@@ -3,6 +3,7 @@ import { FormControl, FormGroup, Validators } from '@angular/forms'
 import { VotingForm } from 'src/app/models/VotingForm'
 
 import { VotingService } from '../../services/voting.service'
+import { numberOfCandidatesValidator, numberOfWinnersValidator } from '../../validators/voting-form-validators'
 
 @Component({
   selector: 'app-voting-form',
@@ -26,14 +27,23 @@ export class VotingFormComponent {
     if (!formControl.errors) return null
     else if (formControl.errors['required']) return 'Campo Requerido'
     else if (formControl.errors['min']) return 'El valor mínimo es 1'
+    else if (formControl.errors['max']) return 'Sobrepasaste el valor máximo'
     else return 'Error desconocido'
   }
 
   constructor(private votingService: VotingService) {
     this.votingForm = new FormGroup(<VotingForm>{
       name: new FormControl('', Validators.required),
-      numberOfCandidates: new FormControl(0, [Validators.required, Validators.min(1)]),
-      numberOfWinners: new FormControl(0, [Validators.required, Validators.min(1)]),
+      numberOfCandidates: new FormControl(0, [
+        Validators.required,
+        Validators.min(1),
+        numberOfCandidatesValidator()
+      ]),
+      numberOfWinners: new FormControl(0, [
+        Validators.required,
+        Validators.min(1),
+        numberOfWinnersValidator()
+      ]),
       peopleInCensus: new FormControl(0, [Validators.required, Validators.min(1)])
     })
   }
