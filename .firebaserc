@@ -1,0 +1,14 @@
+{
+  "targets": {
+    "commie-voting-app": {
+      "hosting": {
+        "commie-voting-app": [
+          "commie-voting-app"
+        ]
+      }
+    }
+  },
+  "projects": {
+    "default": "commie-voting-app"
+  }
+}
