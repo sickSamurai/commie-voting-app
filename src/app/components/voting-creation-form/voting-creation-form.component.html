@@ -1,4 +1,4 @@
-<form [formGroup]="votingForm" autocomplete="off" (ngSubmit)="onVotingCreation()">
+<form [formGroup]="votingCreationForm" autocomplete="off" (ngSubmit)="onVotingCreation()">
   <mat-card>
     <mat-card-header>
       <mat-card-title>¡Crea un nueva votación!</mat-card-title>
@@ -9,28 +9,28 @@
         <mat-label>Nombre/Motivo</mat-label>
         <input matInput formControlName="name" />
         <mat-hint>De que se trata está votación?</mat-hint>
-        <mat-error>{{ getFormControlError(votingForm.controls.name) }}</mat-error>
+        <mat-error>{{ getFormControlError(votingCreationForm.controls.name) }}</mat-error>
       </mat-form-field>
 
       <mat-form-field appearance="fill" color="accent">
         <mat-label>Personas habilitadas para votar</mat-label>
         <input matInput type="number" formControlName="peopleInCensus" />
         <mat-hint>¿Cuantas personas están habilitadas para votar?</mat-hint>
-        <mat-error>{{ getFormControlError(votingForm.controls.peopleInCensus, 3) }}</mat-error>
+        <mat-error>{{ getFormControlError(votingCreationForm.controls.peopleInCensus, 3) }}</mat-error>
       </mat-form-field>
 
       <mat-form-field appearance="fill" color="accent">
         <mat-label>Personas candidatas</mat-label>
         <input matInput type="number" formControlName="numberOfCandidates" />
         <mat-hint>¿Cuantas personas son candidatas?</mat-hint>
-        <mat-error>{{ getFormControlError(votingForm.controls.numberOfCandidates, 1) }}</mat-error>
+        <mat-error>{{ getFormControlError(votingCreationForm.controls.numberOfCandidates, 1) }}</mat-error>
       </mat-form-field>
 
       <mat-form-field appearance="fill" color="accent">
         <mat-label>Cantidad de personas a elegir</mat-label>
         <input matInput type="number" formControlName="numberOfWinners" />
         <mat-hint>¿Cuantas personas pueden ganar la votación?</mat-hint>
-        <mat-error>{{ getFormControlError(votingForm.controls.numberOfWinners, 1) }}</mat-error>
+        <mat-error>{{ getFormControlError(votingCreationForm.controls.numberOfWinners, 1) }}</mat-error>
       </mat-form-field>
     </mat-card-content>
 

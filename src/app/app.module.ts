@@ -11,12 +11,12 @@ import { AngularMaterialModule } from './angular-material/angular-material.modul
 import { AppRoutingModule } from './app-routing.module'
 import { AppComponent } from './app.component'
 import { CandidatesFormComponent } from './components/candidates-form/candidates-form.component'
-import { VotingFormComponent } from './components/voting-form/voting-form.component'
+import { NavbarComponent } from './components/navbar/navbar.component'
+import { VotingCreationFormComponent } from './components/voting-creation-form/voting-creation-form.component'
 import { CreationPageComponent } from './pages/creation-page/creation-page.component'
 import { NotFoundPageComponent } from './pages/not-found-page/not-found-page.component'
 import { ResultsPageComponent } from './pages/results-page/results-page.component'
-import { VotingPageComponent } from './pages/voting-page/voting-page.component';
-import { NavbarComponent } from './components/navbar/navbar.component'
+import { VotingPageComponent } from './pages/voting-page/voting-page.component'
 
 @NgModule({
   declarations: [
@@ -25,7 +25,7 @@ import { NavbarComponent } from './components/navbar/navbar.component'
     VotingPageComponent,
     ResultsPageComponent,
     NotFoundPageComponent,
-    VotingFormComponent,
+    VotingCreationFormComponent,
     CandidatesFormComponent,
     NavbarComponent
   ],

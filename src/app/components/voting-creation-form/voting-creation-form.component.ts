@@ -1,25 +1,28 @@
 import { Component, EventEmitter, Output } from '@angular/core'
 import { FormControl, FormGroup, Validators } from '@angular/forms'
-import { VotingForm } from 'src/app/models/VotingForm'
+import { VotingCreationForm } from 'src/app/models/VotingCreationForm'
 
 import { VotingService } from '../../services/voting.service'
-import { numberOfCandidatesValidator, numberOfWinnersValidator } from '../../validators/voting-form-validators'
+import {
+  numberOfCandidatesValidator,
+  numberOfWinnersValidator
+} from '../../validators/voting-form-validators'
 
 @Component({
-  selector: 'app-voting-form',
-  templateUrl: './voting-form.component.html',
-  styleUrls: ['./voting-form.component.scss']
+  selector: 'app-voting-creation-form',
+  templateUrl: './voting-creation-form.component.html',
+  styleUrls: ['./voting-creation-form.component.scss']
 })
-export class VotingFormComponent {
-  votingForm: FormGroup<VotingForm>
+export class VotingCreationFormComponent {
+  votingCreationForm: FormGroup<VotingCreationForm>
   @Output() votingCreated = new EventEmitter()
 
   onVotingCreation() {
-    if (this.votingForm.invalid) return
-    this.votingService.setVotingName(this.votingForm.controls.name.value)
-    this.votingService.setNumberOfCandidates(this.votingForm.controls.numberOfCandidates.value)
-    this.votingService.setNumberOfWinners(this.votingForm.controls.numberOfWinners.value)
-    this.votingService.setPeopleInCensus(this.votingForm.controls.peopleInCensus.value)
+    if (this.votingCreationForm.invalid) return
+    this.votingService.setVotingName(this.votingCreationForm.controls.name.value)
+    this.votingService.setNumberOfCandidates(this.votingCreationForm.controls.numberOfCandidates.value)
+    this.votingService.setNumberOfWinners(this.votingCreationForm.controls.numberOfWinners.value)
+    this.votingService.setPeopleInCensus(this.votingCreationForm.controls.peopleInCensus.value)
     this.votingCreated.emit()
   }
 
@@ -32,22 +35,22 @@ export class VotingFormComponent {
   }
 
   subscribeToPeopleInCensusValueChanges() {
-    this.votingForm.controls.peopleInCensus.valueChanges.subscribe({
+    this.votingCreationForm.controls.peopleInCensus.valueChanges.subscribe({
       next: () => {
-        this.votingForm.controls.numberOfCandidates.updateValueAndValidity()
-        this.votingForm.controls.numberOfWinners.updateValueAndValidity()
+        this.votingCreationForm.controls.numberOfCandidates.updateValueAndValidity()
+        this.votingCreationForm.controls.numberOfWinners.updateValueAndValidity()
       }
     })
   }
 
   subscribeToNumberOfCandidatesValueChanges() {
-    this.votingForm.controls.numberOfCandidates.valueChanges.subscribe({
-      next: () => this.votingForm.controls.numberOfWinners.updateValueAndValidity()
+    this.votingCreationForm.controls.numberOfCandidates.valueChanges.subscribe({
+      next: () => this.votingCreationForm.controls.numberOfWinners.updateValueAndValidity()
     })
   }
 
   constructor(private votingService: VotingService) {
-    this.votingForm = new FormGroup(<VotingForm>{
+    this.votingCreationForm = new FormGroup(<VotingCreationForm>{
       name: new FormControl('', Validators.required),
       peopleInCensus: new FormControl(0, [Validators.required, Validators.min(3)]),
       numberOfCandidates: new FormControl(0, [

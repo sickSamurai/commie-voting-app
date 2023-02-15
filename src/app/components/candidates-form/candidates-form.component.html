@@ -31,7 +31,7 @@
     </mat-card>
   </form>
 
-  <ng-container *ngIf="candidates.length == 0; else candidatesAdded">
+  <ng-container *ngIf="candidates.length === 0; else candidatesAdded">
     <mat-card>
       <mat-card-content>
         <h3>¡Agrega un candidato!</h3>
