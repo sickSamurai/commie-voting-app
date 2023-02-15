@@ -40,9 +40,16 @@ export class VotingFormComponent {
     })
   }
 
+  subscribeToNumberOfCandidatesValueChanges() {
+    this.votingForm.controls.numberOfCandidates.valueChanges.subscribe({
+      next: () => this.votingForm.controls.numberOfWinners.updateValueAndValidity()
+    })
+  }
+
   constructor(private votingService: VotingService) {
     this.votingForm = new FormGroup(<VotingForm>{
       name: new FormControl('', Validators.required),
+      peopleInCensus: new FormControl(0, [Validators.required, Validators.min(3)]),
       numberOfCandidates: new FormControl(0, [
         Validators.required,
         Validators.min(1),
@@ -52,9 +59,9 @@ export class VotingFormComponent {
         Validators.required,
         Validators.min(1),
         numberOfWinnersValidator()
-      ]),
-      peopleInCensus: new FormControl(0, [Validators.required, Validators.min(3)])
+      ])
     })
     this.subscribeToPeopleInCensusValueChanges()
+    this.subscribeToNumberOfCandidatesValueChanges()
   }
 }
