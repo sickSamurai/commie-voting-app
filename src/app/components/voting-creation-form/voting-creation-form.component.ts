@@ -6,7 +6,7 @@ import { VotingService } from '../../services/voting.service'
 import {
   numberOfCandidatesValidator,
   numberOfWinnersValidator
-} from '../../validators/voting-form-validators'
+} from '../../validators/voting-creation-form-validators'
 
 @Component({
   selector: 'app-voting-creation-form',
