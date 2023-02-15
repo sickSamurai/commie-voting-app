@@ -23,19 +23,15 @@ export class CandidatesFormComponent implements OnDestroy {
   candidateToEditIndex = 0
 
   saveData() {
-    if (this.mode === 'creation') {
-      this.addCandidate()
-    } else {
-      this.editCandidate()
-      this.setupCreationMode()
-    }
+    if (this.mode === 'creation') this.addCandidate()
+    else this.editCandidate()
+    this.setupCreationMode()
   }
 
   addCandidate() {
     if (this.nameFormControl.valid && this.remainingCandidates > 0) {
       this.candidates.push({ name: this.nameFormControl.value || 'null', votes: 0 })
       this.remainingCandidates -= 1
-      this.nameFormControl.reset()
     }
   }
 
@@ -49,13 +45,13 @@ export class CandidatesFormComponent implements OnDestroy {
   }
 
   get candidateFormTitle() {
-    return this.mode === 'creation'
+    return this.creationModeActivated
       ? `Agrega un candidato/a para la votación "${this.votingName}"`
       : 'Edita el candidato/a'
   }
 
   get buttonText() {
-    return this.mode === 'creation' ? 'agregar' : 'editar'
+    return this.creationModeActivated ? 'agregar' : 'editar'
   }
 
   get remainingCandidatesText() {
@@ -66,17 +62,17 @@ export class CandidatesFormComponent implements OnDestroy {
     } else return `Quedan ${this.remainingCandidates} candidatos`
   }
 
+  get creationModeActivated() {
+    return this.mode === 'creation'
+  }
+
   get thereAreCandidates() {
     return this.remainingCandidates != 0
   }
 
-  get canAddCandidates() {
-    return this.mode === 'creation' && this.thereAreCandidates
-  }
-
   setupCreationMode() {
     this.mode = 'creation'
-    this.nameFormControl.reset()
+    this.nameFormControl.reset('')
   }
 
   setupEditMode(name: string) {

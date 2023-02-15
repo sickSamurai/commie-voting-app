@@ -1,7 +1,7 @@
 div {
   height: 100vh;
   display: grid;  
-  grid-template-columns: 3fr 1fr;
+  grid-template-columns: 2fr 1fr;
   justify-content: center;
   align-items: center;
   gap: 16px;
@@ -34,7 +34,7 @@ mat-form-field {
   box-sizing: border-box;
 }
 
-mat-list{
+mat-list {
   width: 100%;
   mat-list-item{
     padding: 0;
@@ -45,4 +45,8 @@ mat-list{
       padding: 0;
     }  
   }
+}
+
+button{
+  text-transform: uppercase;
 }
