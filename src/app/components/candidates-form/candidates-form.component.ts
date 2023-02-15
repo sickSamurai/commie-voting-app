@@ -5,6 +5,8 @@ import { Candidate } from 'src/app/models/Candidate'
 
 import { VotingService } from '../../services/voting.service'
 
+type FormMode = 'creation' | 'edition'
+
 @Component({
   selector: 'app-candidates-form',
   templateUrl: './candidates-form.component.html',
@@ -12,23 +14,48 @@ import { VotingService } from '../../services/voting.service'
 })
 export class CandidatesFormComponent implements OnDestroy {
   votingName = ''
-  candidates: Array<Candidate> = []
   remainingCandidates = 0
+  candidates: Array<Candidate> = []
   numberOfCandidatesSubscription = new Subscription()
   votingNameSubscription = new Subscription()
   nameFormControl = new FormControl('', Validators.required)
+  mode: FormMode = 'creation'
+  candidateToEditIndex = 0
+
+  saveData() {
+    if (this.mode === 'creation') {
+      this.addCandidate()
+    } else {
+      this.editCandidate()
+      this.setupCreationMode()
+    }
+  }
 
   addCandidate() {
     if (this.nameFormControl.valid && this.remainingCandidates > 0) {
       this.candidates.push({ name: this.nameFormControl.value || 'null', votes: 0 })
       this.remainingCandidates -= 1
       this.nameFormControl.reset()
-      this.nameFormControl.markAsUntouched()
     }
+  }
+
+  editCandidate() {
+    if (this.nameFormControl.invalid) return
+    this.candidates[this.candidateToEditIndex].name = this.nameFormControl.value || 'null'
   }
 
   saveAllCandidates() {
     this.votingService.setCandidates(this.candidates)
+  }
+
+  get candidateFormTitle() {
+    return this.mode === 'creation'
+      ? `Agrega un candidato/a para la votación "${this.votingName}"`
+      : 'Edita el candidato/a'
+  }
+
+  get buttonText() {
+    return this.mode === 'creation' ? 'agregar' : 'editar'
   }
 
   get remainingCandidatesText() {
@@ -37,6 +64,25 @@ export class CandidatesFormComponent implements OnDestroy {
     } else if (this.remainingCandidates === 1) {
       return 'Queda un candidato'
     } else return `Quedan ${this.remainingCandidates} candidatos`
+  }
+
+  get thereAreCandidates() {
+    return this.remainingCandidates != 0
+  }
+
+  get canAddCandidates() {
+    return this.mode === 'creation' && this.thereAreCandidates
+  }
+
+  setupCreationMode() {
+    this.mode = 'creation'
+    this.nameFormControl.reset()
+  }
+
+  setupEditMode(name: string) {
+    this.mode = 'edition'
+    this.nameFormControl.setValue(name)
+    this.candidateToEditIndex = this.candidates.findIndex(candidate => candidate.name === name)
   }
 
   ngOnDestroy(): void {
