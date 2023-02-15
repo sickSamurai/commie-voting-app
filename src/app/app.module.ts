@@ -15,7 +15,8 @@ import { VotingFormComponent } from './components/voting-form/voting-form.compon
 import { CreationPageComponent } from './pages/creation-page/creation-page.component'
 import { NotFoundPageComponent } from './pages/not-found-page/not-found-page.component'
 import { ResultsPageComponent } from './pages/results-page/results-page.component'
-import { VotingPageComponent } from './pages/voting-page/voting-page.component'
+import { VotingPageComponent } from './pages/voting-page/voting-page.component';
+import { NavbarComponent } from './components/navbar/navbar.component'
 
 @NgModule({
   declarations: [
@@ -25,7 +26,8 @@ import { VotingPageComponent } from './pages/voting-page/voting-page.component'
     ResultsPageComponent,
     NotFoundPageComponent,
     VotingFormComponent,
-    CandidatesFormComponent
+    CandidatesFormComponent,
+    NavbarComponent
   ],
   imports: [
     BrowserModule,

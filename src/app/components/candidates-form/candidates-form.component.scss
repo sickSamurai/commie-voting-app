@@ -1,11 +1,10 @@
-div {
-  height: 100vh;
+div.main-container {    
+  width: 66vw;
   display: grid;  
   grid-template-columns: 2fr 1fr;
   justify-content: center;
   align-items: center;
-  gap: 16px;
-  padding: 0 24px;
+  gap: 16px;  
 }
 
 .form-card {  
@@ -36,8 +35,7 @@ mat-form-field {
 
 mat-list {
   width: 100%;
-  mat-list-item{
-    padding: 0;
+  mat-list-item{    
     div{            
       display: flex;    
       align-items: center;

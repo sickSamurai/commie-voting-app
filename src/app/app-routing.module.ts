@@ -8,7 +8,7 @@ import { VotingPageComponent } from './pages/voting-page/voting-page.component'
 
 const routes: Routes = [
   { path: 'voting', component: VotingPageComponent },
-  { path: '', redirectTo: 'voting', pathMatch: 'full' },
+  { path: '', redirectTo: 'creation', pathMatch: 'full' },
   { path: 'creation', component: CreationPageComponent },
   { path: 'results', component: ResultsPageComponent },
   { path: '**', component: NotFoundPageComponent }
