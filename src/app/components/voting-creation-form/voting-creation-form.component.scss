@@ -1,20 +1,19 @@
-form {  
-  width: 100vw;
+form {
+  width: 66vw;
   display: flex;
   justify-content: center;
-  align-items: center;  
+  align-items: center;
 }
 
 mat-card {
-  width: 66%;
+  width: 100%;
+  mat-card-content {
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+  }
 }
 
-mat-card-content {
-  display: flex;
-  flex-direction: column;
-  gap: 16px;
-}
-
-button{
+button {
   text-transform: uppercase;
 }

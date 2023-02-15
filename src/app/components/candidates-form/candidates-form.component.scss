@@ -1,16 +1,16 @@
-div.main-container {    
+div.main-container {
   width: 66vw;
-  display: grid;  
-  grid-template-columns: 2fr 1fr;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
   justify-content: center;
   align-items: center;
-  gap: 16px;  
+  gap: 16px;
 }
 
-.form-card {  
+.form-card {
   display: flex;
-  flex-direction: column;  
-  gap: 24px;  
+  flex-direction: column;
+  gap: 24px;
 }
 
 mat-card-content {
@@ -24,27 +24,31 @@ mat-form-field {
   width: 100%;
 }
 
+.multi-column {
+  grid-column: span 2;
+}
+
 .candidates-list-container {
   width: 100%;
   max-height: 60vh;
   height: auto;
-  overflow: auto;  
+  overflow: auto;
   display: flex;
   box-sizing: border-box;
 }
 
 mat-list {
   width: 100%;
-  mat-list-item{    
-    div{            
-      display: flex;    
+  mat-list-item {
+    div {
+      display: flex;
       align-items: center;
       justify-content: space-between;
       padding: 0;
-    }  
+    }
   }
 }
 
-button{
+button {
   text-transform: uppercase;
 }
