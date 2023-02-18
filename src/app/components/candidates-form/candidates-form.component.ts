@@ -1,4 +1,4 @@
-import { Component, OnDestroy } from '@angular/core'
+import { Component, EventEmitter, OnDestroy, Output } from '@angular/core'
 import { FormControl, Validators } from '@angular/forms'
 import { Subscription } from 'rxjs'
 import { Candidate } from 'src/app/models/Candidate'
@@ -13,6 +13,7 @@ type FormMode = 'creation' | 'edition'
   styleUrls: ['./candidates-form.component.scss']
 })
 export class CandidatesFormComponent implements OnDestroy {
+  @Output() votingCreated = new EventEmitter()
   votingName = ''
   remainingCandidates = 0
   candidates: Array<Candidate> = []
@@ -42,6 +43,8 @@ export class CandidatesFormComponent implements OnDestroy {
 
   saveAllCandidates() {
     this.votingService.setCandidates(this.candidates)
+    this.votingService.addVoting()
+    this.votingCreated.emit()
   }
 
   get candidateFormTitle() {

@@ -1,6 +1,6 @@
 <div>
   <ng-container *ngIf="votingCreated; else creatingVoting">
-    <app-candidates-form></app-candidates-form>
+    <app-candidates-form (votingCreated)="showVotingForm()"></app-candidates-form>
   </ng-container>
 
   <ng-template #creatingVoting>

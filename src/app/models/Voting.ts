@@ -15,11 +15,15 @@ export class Voting {
 
   getName = () => this.name.asObservable()
 
+  getNameValue = () => this.name.value
+
   setCandidates(candidates: Candidate[]) {
     this.candidates.next(candidates)
   }
 
   getCandidates = () => this.candidates.asObservable()
+
+  getCandidatesValue = () => this.candidates.value
 
   setNumberOfCandidates(numberOfCandidates: number) {
     this.numberOfCandidates.next(numberOfCandidates)
@@ -27,17 +31,23 @@ export class Voting {
 
   getNumberOfCandidates = () => this.numberOfCandidates.asObservable()
 
+  getNumberOfCandidatesValue = () => this.numberOfCandidates.value
+
   setNumberOfWinners(numberOfWinners: number) {
     this.numberOfWinners.next(numberOfWinners)
   }
 
   getNumberOfWinners = () => this.numberOfWinners.asObservable()
 
+  getNumberOfWinnersValue = () => this.numberOfWinners.value
+
   setPeopleInCensus(peopleInCensus: number) {
     this.peopleInCensus.next(peopleInCensus)
   }
 
   getPeopleInCensus = () => this.peopleInCensus.asObservable()
+
+  getPeopleInCensusValue = () => this.peopleInCensus.value
 
   constructor() {
     this.name = new BehaviorSubject('')
