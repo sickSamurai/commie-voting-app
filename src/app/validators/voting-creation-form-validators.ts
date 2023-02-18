@@ -1,5 +1,12 @@
 import { AbstractControl, ValidationErrors, ValidatorFn } from '@angular/forms'
 
+export function repeatedNameValidator(candidatesNames: string[]): ValidatorFn {
+  return (control: AbstractControl): ValidationErrors | null => {
+    if (candidatesNames.includes(control.value)) return { repeatedName: true }
+    else return null
+  }
+}
+
 export function numberOfCandidatesValidator(): ValidatorFn {
   return (control: AbstractControl): ValidationErrors | null => {
     const peopleInCensusFormControl = control.parent?.get('peopleInCensus')

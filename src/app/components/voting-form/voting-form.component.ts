@@ -12,8 +12,10 @@ import { VotingService } from 'src/app/services/voting.service'
 export class VotingFormComponent {
   votingList: VotingDTO[]
   votingListSubscription: Subscription
+  peopleInCensusSubscription: Subscription
   votingForms: FormGroup[]
   currentVotingPage = 1
+  remainingVotes = 0
 
   get currentVoting() {
     return this.votingList[this.currentVotingPage - 1]
@@ -24,11 +26,12 @@ export class VotingFormComponent {
   }
 
   vote() {
+    if (this.remainingVotes <= 0) return
     this.currentVoting.candidates.forEach(candidate => {
-      const wasVoted = this.currentVotingForm.get(candidate.name)?.value
-      candidate.votes += wasVoted ? 1 : 0
+      candidate.votes += this.currentVotingForm.get(candidate.name)?.value ? 1 : 0
     })
     console.log(this.currentVoting.candidates)
+
     if (this.currentVotingPage < this.votingList.length) this.currentVotingPage++
   }
 
@@ -37,6 +40,10 @@ export class VotingFormComponent {
       this.votingList = list
       this.generateVotingForms()
     })
+  }
+
+  subscribeToPeopleInCensus() {
+    this.votingService.getPeopleInCensus().subscribe(peopleInCensus => (this.remainingVotes = peopleInCensus))
   }
 
   generateVotingForms() {
@@ -50,12 +57,15 @@ export class VotingFormComponent {
 
   ngOnDestroy(): void {
     this.votingListSubscription.unsubscribe()
+    this.peopleInCensusSubscription.unsubscribe()
   }
 
   constructor(private votingService: VotingService) {
     this.votingForms = []
     this.votingList = []
     this.votingListSubscription = new Subscription()
+    this.peopleInCensusSubscription = new Subscription()
     this.subscribeToVotingList()
+    this.subscribeToPeopleInCensus()
   }
 }

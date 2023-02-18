@@ -2,6 +2,7 @@
   <mat-card>
     <mat-card-header>
       <mat-card-title>{{ currentVoting.name }}</mat-card-title>
+      <mat-card-subtitle>Votos restantes: {{ remainingVotes }} (no hagas trampa) </mat-card-subtitle>
     </mat-card-header>
     <mat-card-content>
       <mat-checkbox *ngFor="let candidate of currentVoting.candidates" [formControlName]="candidate.name">
@@ -9,7 +10,7 @@
       </mat-checkbox>
     </mat-card-content>
     <mat-card-actions>
-      <button (click)="vote()" mat-button color="primary">Votar</button>
+      <button (click)="vote()" mat-flat-button color="primary" [disabled]="remainingVotes <= 0">Votar</button>
     </mat-card-actions>
   </mat-card>
 </form>
