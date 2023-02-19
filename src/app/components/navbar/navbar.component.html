@@ -1,4 +1,10 @@
-<mat-toolbar color="primary">
-  <a routerLink="creation" mat-button>crear una nueva votación</a>
-  <a routerLink="voting" mat-button>empezar proceso de votación</a>
+<mat-toolbar>
+  <div class="brand-container">
+    <img src="../../assets/favicon.png" width="36px" height="36px" />
+    <span>Commie Voting</span>
+  </div>
+  <div>
+    <a routerLink="creation" routerLinkActive="active-link" mat-button>crear una nueva votación</a>
+    <a routerLink="voting" routerLinkActive="active-link" mat-button>empezar proceso de votación</a>
+  </div>
 </mat-toolbar>

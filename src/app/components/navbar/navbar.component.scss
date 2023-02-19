@@ -1,3 +1,24 @@
-a{
+a {
+  color: #f44336;
   text-transform: capitalize;
+}
+
+mat-toolbar {
+  display: flex;
+  justify-content: space-between;
+}
+
+div {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: center;
+}
+
+.brand-container {
+  gap: 16px;
+}
+
+.active-link {
+  background-color: #f44336;
 }
