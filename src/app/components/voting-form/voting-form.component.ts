@@ -1,8 +1,11 @@
 import { Component } from '@angular/core'
 import { FormControl, FormGroup } from '@angular/forms'
+import { MatSnackBar } from '@angular/material/snack-bar'
 import { Subscription } from 'rxjs'
 import { VotingDTO } from 'src/app/models/VotingDTO'
 import { VotingService } from 'src/app/services/voting.service'
+
+import { SnackBarComponent } from '../snack-bar/snack-bar.component'
 
 @Component({
   selector: 'app-voting-form',
@@ -12,10 +15,8 @@ import { VotingService } from 'src/app/services/voting.service'
 export class VotingFormComponent {
   votingList: VotingDTO[]
   votingListSubscription: Subscription
-  peopleInCensusSubscription: Subscription
   votingForms: FormGroup[]
   currentVotingPage = 1
-  remainingVotes = 0
 
   get currentVoting() {
     return this.votingList[this.currentVotingPage - 1]
@@ -25,25 +26,27 @@ export class VotingFormComponent {
     return this.votingForms[this.currentVotingPage - 1]
   }
 
+  goNextVoting() {
+    if (this.currentVotingPage < this.votingList.length) this.currentVotingPage++
+    else this.currentVotingPage = 1
+  }
+
   vote() {
-    if (this.remainingVotes <= 0) return
+    if (this.currentVoting.peopleInCensus <= 0) return
     this.currentVoting.candidates.forEach(candidate => {
       candidate.votes += this.currentVotingForm.get(candidate.name)?.value ? 1 : 0
     })
     console.log(this.currentVoting.candidates)
-
-    if (this.currentVotingPage < this.votingList.length) this.currentVotingPage++
+    this.currentVoting.peopleInCensus -= 1
+    this.openConfirmationSnackBar()
+    this.goNextVoting()
   }
 
   subscribeToVotingList() {
-    this.votingListSubscription = this.votingService.getVotingList().subscribe(list => {
-      this.votingList = list
+    this.votingListSubscription = this.votingService.getVotingList().subscribe(votingList => {
+      this.votingList = votingList
       this.generateVotingForms()
     })
-  }
-
-  subscribeToPeopleInCensus() {
-    this.votingService.getPeopleInCensus().subscribe(peopleInCensus => (this.remainingVotes = peopleInCensus))
   }
 
   generateVotingForms() {
@@ -55,17 +58,21 @@ export class VotingFormComponent {
     })
   }
 
-  ngOnDestroy(): void {
-    this.votingListSubscription.unsubscribe()
-    this.peopleInCensusSubscription.unsubscribe()
+  openConfirmationSnackBar() {
+    this.snackBar.openFromComponent(SnackBarComponent, {
+      duration: 3000,
+      data: 'Votación Exitosa'
+    })
   }
 
-  constructor(private votingService: VotingService) {
+  ngOnDestroy(): void {
+    this.votingListSubscription.unsubscribe()
+  }
+
+  constructor(private votingService: VotingService, private snackBar: MatSnackBar) {
     this.votingForms = []
     this.votingList = []
     this.votingListSubscription = new Subscription()
-    this.peopleInCensusSubscription = new Subscription()
     this.subscribeToVotingList()
-    this.subscribeToPeopleInCensus()
   }
 }

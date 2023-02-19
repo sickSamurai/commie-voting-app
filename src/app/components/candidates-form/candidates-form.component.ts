@@ -1,9 +1,11 @@
 import { Component, EventEmitter, OnDestroy, Output } from '@angular/core'
 import { FormControl, Validators } from '@angular/forms'
+import { MatSnackBar } from '@angular/material/snack-bar'
 import { Subscription } from 'rxjs'
 import { Candidate } from 'src/app/models/Candidate'
 
 import { VotingService } from '../../services/voting.service'
+import { SnackBarComponent } from '../snack-bar/snack-bar.component'
 
 type FormMode = 'creation' | 'edition'
 
@@ -45,6 +47,7 @@ export class CandidatesFormComponent implements OnDestroy {
     this.votingService.setCandidates(this.candidates)
     this.votingService.addVoting()
     this.votingCreated.emit()
+    this.openConfirmationSnackbar()
   }
 
   get candidateFormTitle() {
@@ -84,12 +87,19 @@ export class CandidatesFormComponent implements OnDestroy {
     this.candidateToEditIndex = this.candidates.findIndex(candidate => candidate.name === name)
   }
 
+  openConfirmationSnackbar() {
+    this.snackBar.openFromComponent(SnackBarComponent, {
+      duration: 2000,
+      data: 'Votación añadida con éxito'
+    })
+  }
+
   ngOnDestroy(): void {
     this.numberOfCandidatesSubscription.unsubscribe()
     this.votingNameSubscription.unsubscribe()
   }
 
-  constructor(private votingService: VotingService) {
+  constructor(private votingService: VotingService, private snackBar: MatSnackBar) {
     this.numberOfCandidatesSubscription = this.votingService.getNumberOfCandidates().subscribe({
       next: value => (this.remainingCandidates = value)
     })

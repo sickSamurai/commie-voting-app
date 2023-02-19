@@ -11,13 +11,15 @@ import { AngularMaterialModule } from './angular-material/angular-material.modul
 import { AppRoutingModule } from './app-routing.module'
 import { AppComponent } from './app.component'
 import { CandidatesFormComponent } from './components/candidates-form/candidates-form.component'
+import { ErrorDialogComponent } from './components/error-dialog/error-dialog.component'
 import { NavbarComponent } from './components/navbar/navbar.component'
+import { SnackBarComponent } from './components/snack-bar/snack-bar.component'
 import { VotingCreationFormComponent } from './components/voting-creation-form/voting-creation-form.component'
+import { VotingFormComponent } from './components/voting-form/voting-form.component'
 import { CreationPageComponent } from './pages/creation-page/creation-page.component'
 import { NotFoundPageComponent } from './pages/not-found-page/not-found-page.component'
 import { ResultsPageComponent } from './pages/results-page/results-page.component'
-import { VotingPageComponent } from './pages/voting-page/voting-page.component';
-import { VotingFormComponent } from './components/voting-form/voting-form.component'
+import { VotingPageComponent } from './pages/voting-page/voting-page.component'
 
 @NgModule({
   declarations: [
@@ -29,7 +31,9 @@ import { VotingFormComponent } from './components/voting-form/voting-form.compon
     VotingCreationFormComponent,
     CandidatesFormComponent,
     NavbarComponent,
-    VotingFormComponent
+    VotingFormComponent,
+    SnackBarComponent,
+    ErrorDialogComponent
   ],
   imports: [
     BrowserModule,
