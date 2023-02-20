@@ -1,5 +1,5 @@
 <div class="main-container">
-  <form *ngIf="thereAreCandidates || !creationModeActivated" (ngSubmit)="saveData()" autocomplete="off">
+  <form *ngIf="thereAreCandidates || !creationModeActivated" (ngSubmit)="saveCandidate()" autocomplete="off">
     <mat-card class="form-card">
       <mat-card-header>
         <mat-card-title> {{ candidateFormTitle }} </mat-card-title>

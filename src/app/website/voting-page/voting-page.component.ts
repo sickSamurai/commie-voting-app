@@ -1,11 +1,11 @@
 import { Component, OnDestroy } from '@angular/core'
 import { FormControl, FormGroup } from '@angular/forms'
-import { MatSnackBar } from '@angular/material/snack-bar'
 import { Subscription } from 'rxjs'
+import { VotingStatus } from 'src/app/models/VotingStatus'
 import { VotingService } from 'src/app/services/voting.service'
-import { SnackBarComponent } from 'src/app/shared/components/snack-bar/snack-bar.component'
 
 import { VotingDTO } from '../../models/VotingDTO'
+import { SnackBarService } from '../../services/snack-bar.service'
 
 @Component({
   selector: 'app-voting-page',
@@ -17,6 +17,8 @@ export class VotingPageComponent implements OnDestroy {
   votingList: VotingDTO[]
   votingForms: FormGroup[]
   votingListSubscription: Subscription
+  votingStatusSubscription: Subscription
+  votingStatus: VotingStatus
 
   get currentVoting() {
     return this.votingList[this.currentVotingPage - 1]
@@ -51,6 +53,19 @@ export class VotingPageComponent implements OnDestroy {
     return `Te quedan ${remainingVotes} votos`
   }
 
+  subscribeToVotingList() {
+    this.votingListSubscription = this.votingService.getVotingList().subscribe(votingList => {
+      this.votingList = votingList
+      this.generateVotingForms()
+    })
+  }
+
+  subscribeToVotingStatus() {
+    this.votingStatusSubscription = this.votingService.getVotingStatus().subscribe(votingStatus => {
+      this.votingStatus = votingStatus
+    })
+  }
+
   goNextVoting() {
     if (this.currentVotingPage < this.votingList.length) this.currentVotingPage++
     else this.currentVotingPage = 1
@@ -61,16 +76,9 @@ export class VotingPageComponent implements OnDestroy {
       candidate.votes += +this.currentVotingForm.get(candidate.name)?.value
     })
     console.log(this.currentVoting.candidates)
-    this.openConfirmationSnackBar()
+    this.snackBarService.openSnackBar('Votación Exitosa')
     this.currentVotingForm.reset()
     this.goNextVoting()
-  }
-
-  subscribeToVotingList() {
-    this.votingListSubscription = this.votingService.getVotingList().subscribe(votingList => {
-      this.votingList = votingList
-      this.generateVotingForms()
-    })
   }
 
   generateVotingForms() {
@@ -82,21 +90,18 @@ export class VotingPageComponent implements OnDestroy {
     })
   }
 
-  openConfirmationSnackBar() {
-    this.snackBar.openFromComponent(SnackBarComponent, {
-      duration: 3000,
-      data: 'Votación Exitosa'
-    })
-  }
-
   ngOnDestroy(): void {
     this.votingListSubscription.unsubscribe()
+    this.votingStatusSubscription.unsubscribe()
   }
 
-  constructor(private votingService: VotingService, private snackBar: MatSnackBar) {
+  constructor(private votingService: VotingService, private snackBarService: SnackBarService) {
     this.votingList = []
     this.votingForms = []
+    this.votingStatus = 'undefined'
     this.votingListSubscription = new Subscription()
+    this.votingStatusSubscription = new Subscription()
     this.subscribeToVotingList()
+    this.subscribeToVotingStatus()
   }
 }

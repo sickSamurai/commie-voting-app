@@ -1,5 +1,17 @@
+div.main-container {
+  width: 100vw;
+  height: 100vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
 mat-card-content {
   display: flex;
   flex-direction: column;
   gap: 16px;
+}
+
+button {
+  text-transform: uppercase;
 }

@@ -1,29 +1,35 @@
-<div *ngIf="votingList.length !== 0; else noVotingList">
-  <form (ngSubmit)="vote()" [formGroup]="currentVotingForm">
-    <mat-card>
-      <mat-card-header>
-        <mat-card-title>{{ currentVoting.name }}</mat-card-title>
-        <mat-card-subtitle>
-          <p>{{ maxVotesMessage }}</p>
-          <p>{{ remainingVotesMessage }}</p>
-        </mat-card-subtitle>
-      </mat-card-header>
-      <mat-card-content>
-        <mat-checkbox *ngFor="let candidate of currentVoting.candidates" [formControlName]="candidate.name">
-          {{ candidate.name }}
-        </mat-checkbox>
-      </mat-card-content>
-      <mat-card-actions>
-        <button type="submit" mat-flat-button color="primary" [disabled]="!votingIsValid">votar</button>
-      </mat-card-actions>
-    </mat-card>
-  </form>
-</div>
+<div [ngSwitch]="votingStatus" class="main-container">
+  <div *ngSwitchCase="'started'">
+    <form [formGroup]="currentVotingForm" (ngSubmit)="vote()">
+      <mat-card>
+        <mat-card-header>
+          <mat-card-title>{{ currentVoting.name }}</mat-card-title>
+          <mat-card-subtitle>
+            <p>{{ maxVotesMessage }}</p>
+            <p>{{ remainingVotesMessage }}</p>
+          </mat-card-subtitle>
+        </mat-card-header>
+        <mat-card-content>
+          <mat-checkbox *ngFor="let candidate of currentVoting.candidates" [formControlName]="candidate.name">
+            {{ candidate.name }}
+          </mat-checkbox>
+        </mat-card-content>
+        <mat-card-actions>
+          <button type="submit" mat-flat-button color="primary" [disabled]="!votingIsValid">votar</button>
+        </mat-card-actions>
+      </mat-card>
+    </form>
+  </div>
 
-<ng-template #noVotingList>
-  <mat-card>
+  <mat-card *ngSwitchCase="'finished'">
+    <mat-card-content>
+      <h3>¡Las votaciones ya terminaron!</h3>
+    </mat-card-content>
+  </mat-card>
+
+  <mat-card *ngSwitchDefault>
     <mat-card-content>
       <h3>¡No hay votaciones creadas aun!</h3>
     </mat-card-content>
   </mat-card>
-</ng-template>
+</div>

@@ -1,1 +1,16 @@
-<p>results-page works!</p>
+<div [ngSwitch]="votingStatus">
+  <mat-card *ngSwitchCase="'started'">
+    <mat-card-content> <h3>La votación sigue en curso</h3> </mat-card-content>
+  </mat-card>
+
+  <mat-card *ngSwitchCase="'finished'">
+    <mat-card-header>
+      <mat-card-title>Resultados</mat-card-title>
+    </mat-card-header>
+    <mat-card-content> Aquí van los resultados </mat-card-content>
+  </mat-card>
+
+  <mat-card *ngSwitchDefault>
+    <mat-card-content> <h3>¡No se ha iniciado ninguna votación!</h3> </mat-card-content>
+  </mat-card>
+</div>
