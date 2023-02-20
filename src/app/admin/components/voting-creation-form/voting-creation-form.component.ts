@@ -1,5 +1,5 @@
 import { Component, EventEmitter, Output } from '@angular/core'
-import { FormControl, FormGroup, Validators } from '@angular/forms'
+import { FormGroup } from '@angular/forms'
 import { VotingCreationForm } from 'src/app/models/VotingCreationForm'
 
 import { VotingCreationFormService } from '../../../services/voting-creation-form.service'
@@ -14,39 +14,49 @@ export class VotingCreationFormComponent {
   votingCreationForm: FormGroup<VotingCreationForm>
   @Output() votingCreated = new EventEmitter()
 
-  onVotingCreation() {
-    if (this.votingCreationForm.invalid) return
-    this.votingService.setVotingName(this.votingCreationForm.controls.name.value)
-    this.votingService.setNumberOfCandidates(this.votingCreationForm.controls.numberOfCandidates.value)
-    this.votingService.setNumberOfWinners(this.votingCreationForm.controls.numberOfWinners.value)
-    this.votingCreated.emit()
-  }
-
-  getFormControlError(formControl: FormControl, min?: number) {
-    if (!formControl.errors) return null
-    else if (formControl.errors['required']) return 'Campo Requerido'
-    else if (formControl.errors['min']) return `El valor mínimo es ${min}`
-    else if (formControl.errors['max']) return 'Sobrepasaste el valor máximo'
-    else if (formControl.errors['repeatedName']) return 'Esa votación ya existe'
+  get nameError() {
+    const nameControl = this.votingCreationForm.controls.name
+    if (!nameControl.errors) return null
+    else if (nameControl.errors['required']) return 'Campo Requerido'
+    else if (nameControl.errors['repeatedName']) return 'Esa votación ya existe'
     else return 'Error desconocido'
   }
 
-  subscribeToNumberOfCandidatesValueChanges() {
+  get numberOfCandidatesError() {
+    const numberOfCandidatesControl = this.votingCreationForm.controls.numberOfCandidates
+    if (!numberOfCandidatesControl.errors) return null
+    else if (numberOfCandidatesControl.errors['required']) return 'Campo requerido'
+    else if (numberOfCandidatesControl.errors['min']) return 'El valor mínimo es 2'
+    else return 'Error Desconocido'
+  }
+
+  get numberOfWinnersError() {
+    const numberOfWinnersControl = this.votingCreationForm.controls.numberOfWinners
+    if (!numberOfWinnersControl.errors) return null
+    else if (numberOfWinnersControl.errors['required']) return 'Campo requerido'
+    else if (numberOfWinnersControl.errors['min']) return 'El valor mínimo es 1'
+    else if (numberOfWinnersControl.errors['numberOfWinners'])
+      return 'El numero de personas a elegir no puede ser mayor a la cantidad de candidatos'
+    else return 'Error Desconocido'
+  }
+
+  onVotingCreation() {
+    const { name, numberOfCandidates, numberOfWinners } = this.votingCreationForm.value
+    if (!name || !numberOfCandidates || !numberOfWinners || this.votingCreationForm.invalid) return
+    this.votingService.setVotingName(name)
+    this.votingService.setNumberOfCandidates(numberOfCandidates)
+    this.votingService.setNumberOfWinners(numberOfWinners)
+    this.votingCreated.emit()
+  }
+
+  subscribeToChangesInNumberOfCandidates() {
     this.votingCreationForm.controls.numberOfCandidates.valueChanges.subscribe({
       next: () => this.votingCreationForm.controls.numberOfWinners.updateValueAndValidity()
     })
   }
 
   constructor(private votingService: VotingService, private formService: VotingCreationFormService) {
-    this.votingCreationForm = new FormGroup(<VotingCreationForm>{
-      name: new FormControl('', [Validators.required, this.formService.repeatedNameValidator()]),
-      numberOfCandidates: new FormControl(0, [Validators.required, Validators.min(1)]),
-      numberOfWinners: new FormControl(0, [
-        Validators.required,
-        Validators.min(1),
-        this.formService.numberOfWinnersValidator()
-      ])
-    })
-    this.subscribeToNumberOfCandidatesValueChanges()
+    this.votingCreationForm = new FormGroup(new VotingCreationForm(this.formService))
+    this.subscribeToChangesInNumberOfCandidates()
   }
 }

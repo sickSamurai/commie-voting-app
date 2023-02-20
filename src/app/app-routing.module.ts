@@ -8,12 +8,12 @@ const routes: Routes = [
     path: 'admin',
     loadChildren: () => import('./admin/admin.module').then(module => module.AdminModule)
   },
-  { path: '', redirectTo: 'voting', pathMatch: 'full' },
   {
     path: 'voting',
     loadChildren: () => import('./website/website.module').then(module => module.WebsiteModule)
   },
-  { path: '', component: NotFoundPageComponent }
+  { path: '', redirectTo: 'voting', pathMatch: 'full' },
+  { path: '**', component: NotFoundPageComponent }
 ]
 
 @NgModule({

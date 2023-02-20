@@ -16,19 +16,15 @@ export class VotingCreationFormService {
   }
 
   repeatedNameValidator(): ValidatorFn {
-    return (control: AbstractControl): ValidationErrors | null => {
-      if (this.candidates.includes(control.value)) return { repeatedName: true }
-      else return null
-    }
+    return (control: AbstractControl): ValidationErrors | null =>
+      this.candidates.includes(control.value) ? { repeatedName: true } : null
   }
 
   numberOfWinnersValidator(): ValidatorFn {
     return (control: AbstractControl): ValidationErrors | null => {
-      const numberOfCandidatesFormControl = control.parent?.get('numberOfCandidates')
-      if (!numberOfCandidatesFormControl) return null
-      const numberOfCandidates = +numberOfCandidatesFormControl.value
+      const numberOfCandidates = +control.parent?.get('numberOfCandidates')?.value
       const numberOfWinners = +control.value
-      return numberOfWinners < numberOfCandidates ? null : { max: true }
+      return numberOfCandidates < numberOfWinners ? { numberOfWinners: true } : null
     }
   }
 
