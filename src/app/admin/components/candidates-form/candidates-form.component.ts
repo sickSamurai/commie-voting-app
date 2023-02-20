@@ -4,8 +4,8 @@ import { MatSnackBar } from '@angular/material/snack-bar'
 import { Subscription } from 'rxjs'
 import { Candidate } from 'src/app/models/Candidate'
 
-import { VotingService } from '../../services/voting.service'
-import { SnackBarComponent } from '../snack-bar/snack-bar.component'
+import { VotingService } from '../../../services/voting.service'
+import { SnackBarComponent } from '../../../shared/components/snack-bar/snack-bar.component'
 
 type FormMode = 'creation' | 'edition'
 

@@ -11,8 +11,12 @@ import { MatListModule } from '@angular/material/list'
 import { MatSnackBarModule } from '@angular/material/snack-bar'
 import { MatToolbarModule } from '@angular/material/toolbar'
 
+import { DialogComponent } from './components/dialog/dialog.component'
+import { SnackBarComponent } from './components/snack-bar/snack-bar.component'
+import { NotFoundPageComponent } from './not-found-page/not-found-page.component'
+
 @NgModule({
-  declarations: [],
+  declarations: [SnackBarComponent, DialogComponent, NotFoundPageComponent],
   imports: [
     CommonModule,
     MatButtonModule,
@@ -39,4 +43,4 @@ import { MatToolbarModule } from '@angular/material/toolbar'
     MatToolbarModule
   ]
 })
-export class AngularMaterialModule {}
+export class SharedModule {}

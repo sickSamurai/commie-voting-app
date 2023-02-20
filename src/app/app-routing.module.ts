@@ -1,17 +1,19 @@
 import { NgModule } from '@angular/core'
 import { RouterModule, Routes } from '@angular/router'
 
-import { CreationPageComponent } from './pages/creation-page/creation-page.component'
-import { NotFoundPageComponent } from './pages/not-found-page/not-found-page.component'
-import { ResultsPageComponent } from './pages/results-page/results-page.component'
-import { VotingPageComponent } from './pages/voting-page/voting-page.component'
+import { NotFoundPageComponent } from './shared/not-found-page/not-found-page.component'
 
 const routes: Routes = [
-  { path: 'voting', component: VotingPageComponent },
-  { path: '', redirectTo: 'creation', pathMatch: 'full' },
-  { path: 'creation', component: CreationPageComponent },
-  { path: 'results', component: ResultsPageComponent },
-  { path: '**', component: NotFoundPageComponent }
+  {
+    path: 'admin',
+    loadChildren: () => import('./admin/admin.module').then(module => module.AdminModule)
+  },
+  { path: '', redirectTo: 'voting', pathMatch: 'full' },
+  {
+    path: 'voting',
+    loadChildren: () => import('./website/website.module').then(module => module.WebsiteModule)
+  },
+  { path: '', component: NotFoundPageComponent }
 ]
 
 @NgModule({

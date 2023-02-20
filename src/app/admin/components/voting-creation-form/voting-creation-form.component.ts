@@ -2,11 +2,8 @@ import { Component, EventEmitter, Output } from '@angular/core'
 import { FormControl, FormGroup, Validators } from '@angular/forms'
 import { VotingCreationForm } from 'src/app/models/VotingCreationForm'
 
-import { VotingService } from '../../services/voting.service'
-import {
-  numberOfCandidatesValidator,
-  numberOfWinnersValidator
-} from '../../validators/voting-creation-form-validators'
+import { VotingCreationFormService } from '../../../services/voting-creation-form.service'
+import { VotingService } from '../../../services/voting.service'
 
 @Component({
   selector: 'app-voting-creation-form',
@@ -22,7 +19,6 @@ export class VotingCreationFormComponent {
     this.votingService.setVotingName(this.votingCreationForm.controls.name.value)
     this.votingService.setNumberOfCandidates(this.votingCreationForm.controls.numberOfCandidates.value)
     this.votingService.setNumberOfWinners(this.votingCreationForm.controls.numberOfWinners.value)
-    this.votingService.setPeopleInCensus(this.votingCreationForm.controls.peopleInCensus.value)
     this.votingCreated.emit()
   }
 
@@ -31,16 +27,8 @@ export class VotingCreationFormComponent {
     else if (formControl.errors['required']) return 'Campo Requerido'
     else if (formControl.errors['min']) return `El valor mínimo es ${min}`
     else if (formControl.errors['max']) return 'Sobrepasaste el valor máximo'
+    else if (formControl.errors['repeatedName']) return 'Esa votación ya existe'
     else return 'Error desconocido'
-  }
-
-  subscribeToPeopleInCensusValueChanges() {
-    this.votingCreationForm.controls.peopleInCensus.valueChanges.subscribe({
-      next: () => {
-        this.votingCreationForm.controls.numberOfCandidates.updateValueAndValidity()
-        this.votingCreationForm.controls.numberOfWinners.updateValueAndValidity()
-      }
-    })
   }
 
   subscribeToNumberOfCandidatesValueChanges() {
@@ -49,22 +37,16 @@ export class VotingCreationFormComponent {
     })
   }
 
-  constructor(private votingService: VotingService) {
+  constructor(private votingService: VotingService, private formService: VotingCreationFormService) {
     this.votingCreationForm = new FormGroup(<VotingCreationForm>{
-      name: new FormControl('', Validators.required),
-      peopleInCensus: new FormControl(0, [Validators.required, Validators.min(3)]),
-      numberOfCandidates: new FormControl(0, [
-        Validators.required,
-        Validators.min(1),
-        numberOfCandidatesValidator()
-      ]),
+      name: new FormControl('', [Validators.required, this.formService.repeatedNameValidator()]),
+      numberOfCandidates: new FormControl(0, [Validators.required, Validators.min(1)]),
       numberOfWinners: new FormControl(0, [
         Validators.required,
         Validators.min(1),
-        numberOfWinnersValidator()
+        this.formService.numberOfWinnersValidator()
       ])
     })
-    this.subscribeToPeopleInCensusValueChanges()
     this.subscribeToNumberOfCandidatesValueChanges()
   }
 }

@@ -5,5 +5,4 @@ export interface VotingDTO {
   candidates: Candidate[]
   numberOfCandidates: number
   numberOfWinners: number
-  peopleInCensus: number
 }

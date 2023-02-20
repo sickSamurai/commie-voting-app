@@ -7,7 +7,6 @@ export class Voting {
   candidates: BehaviorSubject<Candidate[]>
   numberOfCandidates: BehaviorSubject<number>
   numberOfWinners: BehaviorSubject<number>
-  peopleInCensus: BehaviorSubject<number>
 
   setName(name: string) {
     this.name.next(name)
@@ -41,19 +40,10 @@ export class Voting {
 
   getNumberOfWinnersValue = () => this.numberOfWinners.value
 
-  setPeopleInCensus(peopleInCensus: number) {
-    this.peopleInCensus.next(peopleInCensus)
-  }
-
-  getPeopleInCensus = () => this.peopleInCensus.asObservable()
-
-  getPeopleInCensusValue = () => this.peopleInCensus.value
-
   constructor() {
     this.name = new BehaviorSubject('')
     this.candidates = new BehaviorSubject(new Array<Candidate>())
     this.numberOfCandidates = new BehaviorSubject(0)
     this.numberOfWinners = new BehaviorSubject(0)
-    this.peopleInCensus = new BehaviorSubject(0)
   }
 }

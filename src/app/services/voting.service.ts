@@ -19,17 +19,16 @@ export class VotingService {
   getVotingName = () => this.voting.getName()
 
   addVoting() {
-    const actualVotingList = this.votingList.value
+    const currentVotingList = this.votingList.value
 
-    actualVotingList.push({
+    currentVotingList.push({
       name: this.voting.getNameValue(),
       candidates: this.voting.getCandidatesValue(),
       numberOfCandidates: this.voting.getNumberOfCandidatesValue(),
-      numberOfWinners: this.voting.getNumberOfWinnersValue(),
-      peopleInCensus: this.voting.getPeopleInCensusValue()
+      numberOfWinners: this.voting.getNumberOfWinnersValue()
     })
 
-    this.votingList.next(actualVotingList)
+    this.votingList.next(currentVotingList)
   }
 
   getVotingList = () => this.votingList.asObservable()
@@ -51,12 +50,6 @@ export class VotingService {
   }
 
   getNumberOfWinners = () => this.voting.getNumberOfWinners()
-
-  setPeopleInCensus(peopleInCensus: number) {
-    this.voting.setPeopleInCensus(peopleInCensus)
-  }
-
-  getPeopleInCensus = () => this.voting.getPeopleInCensus()
 
   constructor() {
     this.voting = new Voting()

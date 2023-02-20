@@ -1,22 +1,22 @@
-import { Component } from '@angular/core'
+import { Component, OnDestroy } from '@angular/core'
 import { FormControl, FormGroup } from '@angular/forms'
 import { MatSnackBar } from '@angular/material/snack-bar'
 import { Subscription } from 'rxjs'
-import { VotingDTO } from 'src/app/models/VotingDTO'
 import { VotingService } from 'src/app/services/voting.service'
+import { SnackBarComponent } from 'src/app/shared/components/snack-bar/snack-bar.component'
 
-import { SnackBarComponent } from '../snack-bar/snack-bar.component'
+import { VotingDTO } from '../../models/VotingDTO'
 
 @Component({
-  selector: 'app-voting-form',
-  templateUrl: './voting-form.component.html',
-  styleUrls: ['./voting-form.component.scss']
+  selector: 'app-voting-page',
+  templateUrl: './voting-page.component.html',
+  styleUrls: ['./voting-page.component.scss']
 })
-export class VotingFormComponent {
-  votingList: VotingDTO[]
-  votingListSubscription: Subscription
-  votingForms: FormGroup[]
+export class VotingPageComponent implements OnDestroy {
   currentVotingPage = 1
+  votingList: VotingDTO[]
+  votingForms: FormGroup[]
+  votingListSubscription: Subscription
 
   get currentVoting() {
     return this.votingList[this.currentVotingPage - 1]
@@ -26,19 +26,43 @@ export class VotingFormComponent {
     return this.votingForms[this.currentVotingPage - 1]
   }
 
+  get currentVotes() {
+    return this.currentVoting.candidates
+      .map<number>(candidate => +this.currentVotingForm.get(candidate.name)?.value)
+      .reduce((previous, current) => previous + current)
+  }
+
+  get votingIsValid() {
+    return this.currentVoting.numberOfWinners >= this.currentVotes
+  }
+
+  get maxVotesMessage() {
+    if (this.currentVoting.numberOfWinners == 1) return 'Recuerda que solo puedes votar por 1 persona'
+    else return `Recuerda que puedes votar por máximo ${this.currentVoting.numberOfWinners} personas`
+  }
+
+  get remainingVotesMessage() {
+    const remainingVotes = this.currentVoting.numberOfWinners - this.currentVotes
+
+    if (remainingVotes == 1) return 'Te queda 1 voto'
+    if (remainingVotes == 0) return 'No te quedan más votos'
+    if (remainingVotes == -1) return `Debes quitar 1 voto`
+    if (remainingVotes < -1) return `Debes quitar ${-remainingVotes} votos`
+    return `Te quedan ${remainingVotes} votos`
+  }
+
   goNextVoting() {
     if (this.currentVotingPage < this.votingList.length) this.currentVotingPage++
     else this.currentVotingPage = 1
   }
 
   vote() {
-    if (this.currentVoting.peopleInCensus <= 0) return
     this.currentVoting.candidates.forEach(candidate => {
-      candidate.votes += this.currentVotingForm.get(candidate.name)?.value ? 1 : 0
+      candidate.votes += +this.currentVotingForm.get(candidate.name)?.value
     })
     console.log(this.currentVoting.candidates)
-    this.currentVoting.peopleInCensus -= 1
     this.openConfirmationSnackBar()
+    this.currentVotingForm.reset()
     this.goNextVoting()
   }
 
@@ -70,8 +94,8 @@ export class VotingFormComponent {
   }
 
   constructor(private votingService: VotingService, private snackBar: MatSnackBar) {
-    this.votingForms = []
     this.votingList = []
+    this.votingForms = []
     this.votingListSubscription = new Subscription()
     this.subscribeToVotingList()
   }
