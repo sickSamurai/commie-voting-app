@@ -11,6 +11,8 @@ import { SnackBarService } from '../../../services/snack-bar.service'
 export class VotingManagementPageComponent {
   startVoting() {
     if (this.votingService.startVoting()) this.snackBarService.openSnackBar('Votación(es) iniciada con éxito')
+    else if (this.votingService.votingStatus.getValue() === 'started')
+      this.snackBarService.openSnackBar('Ya hay una votación en curso')
     else this.snackBarService.openSnackBar('Debes crear al menos una votación antes de iniciar')
   }
 
