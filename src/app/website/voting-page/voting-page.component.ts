@@ -1,6 +1,7 @@
 import { Component, OnDestroy } from '@angular/core'
 import { FormControl, FormGroup } from '@angular/forms'
 import { Subscription } from 'rxjs'
+import { Candidate } from 'src/app/models/Candidate'
 import { VotingStatus } from 'src/app/models/VotingStatus'
 import { VotingService } from 'src/app/services/voting.service'
 
@@ -16,41 +17,75 @@ export class VotingPageComponent implements OnDestroy {
   currentVotingPage = 1
   votingList: VotingDTO[]
   votingForms: FormGroup[]
+  votingStatus: VotingStatus
   votingListSubscription: Subscription
   votingStatusSubscription: Subscription
-  votingStatus: VotingStatus
 
   get currentVoting() {
-    return this.votingList[this.currentVotingPage - 1]
+    return this.votingList.at(this.currentVotingPage - 1)
   }
 
   get currentVotingForm() {
-    return this.votingForms[this.currentVotingPage - 1]
-  }
-
-  get currentVotes() {
-    return this.currentVoting.candidates
-      .map<number>(candidate => +this.currentVotingForm.get(candidate.name)?.value)
-      .reduce((previous, current) => previous + current)
-  }
-
-  get votingIsValid() {
-    return this.currentVoting.numberOfWinners >= this.currentVotes
+    return this.votingForms.at(this.currentVotingPage - 1)
   }
 
   get maxVotesMessage() {
+    if (this.currentVoting === undefined) throw new Error('current voting is undefined')
     if (this.currentVoting.numberOfWinners == 1) return 'Recuerda que solo puedes votar por 1 persona'
-    else return `Recuerda que puedes votar por máximo ${this.currentVoting.numberOfWinners} personas`
+    return `Recuerda que puedes votar por máximo ${this.currentVoting.numberOfWinners} personas`
+  }
+
+  getCandidateVote(candidate: Candidate) {
+    if (this.currentVotingForm === undefined) throw new Error('current form is undefined')
+    return +this.currentVotingForm.get(candidate.name)?.value
+  }
+
+  get currentVotes() {
+    if (this.currentVoting === undefined) throw new Error('current voting is undefined')
+    return this.currentVoting.candidates
+      .map<number>(candidate => this.getCandidateVote(candidate))
+      .reduce((previous, current) => previous + current)
+  }
+
+  get remainingVotes() {
+    if (this.currentVoting === undefined || this.currentVotes === undefined)
+      throw new Error('current voting or current votes are undefined')
+    return this.currentVoting.numberOfWinners - this.currentVotes
   }
 
   get remainingVotesMessage() {
-    const remainingVotes = this.currentVoting.numberOfWinners - this.currentVotes
+    if (this.remainingVotes == 1) return 'Te queda 1 voto'
+    if (this.remainingVotes == 0) return 'No te quedan más votos'
+    if (this.remainingVotes == -1) return `Debes quitar 1 voto`
+    if (this.remainingVotes < -1) return `Debes quitar ${-this.remainingVotes} votos`
+    return `Te quedan ${this.remainingVotes} votos`
+  }
 
-    if (remainingVotes == 1) return 'Te queda 1 voto'
-    if (remainingVotes == 0) return 'No te quedan más votos'
-    if (remainingVotes == -1) return `Debes quitar 1 voto`
-    if (remainingVotes < -1) return `Debes quitar ${-remainingVotes} votos`
-    return `Te quedan ${remainingVotes} votos`
+  goNextVoting() {
+    if (this.currentVotingForm === undefined) throw new Error('current voting form is undefined')
+    if (this.currentVotingPage < this.votingList.length) {
+      this.currentVotingPage++
+    } else {
+      this.currentVotingPage = 1
+      this.currentVotingForm.reset()
+    }
+  }
+
+  vote() {
+    if (this.currentVoting === undefined) throw new Error('current voting is undefined')
+    this.currentVoting.candidates.forEach(candidate => (candidate.votes += this.getCandidateVote(candidate)))
+    this.votingService.updateVoting(this.currentVoting)
+    this.snackBarService.openSnackBar('Votación Exitosa')
+    this.goNextVoting()
+  }
+
+  generateVotingForms() {
+    this.votingForms.splice(0, this.votingList.length) //delete all elements from the array
+    this.votingList.forEach(voting => {
+      const formGroup = new FormGroup({})
+      voting.candidates.forEach(candidate => formGroup.addControl(candidate.name, new FormControl(false)))
+      this.votingForms.push(formGroup)
+    })
   }
 
   subscribeToVotingList() {
@@ -61,33 +96,9 @@ export class VotingPageComponent implements OnDestroy {
   }
 
   subscribeToVotingStatus() {
-    this.votingStatusSubscription = this.votingService.getVotingStatus().subscribe(votingStatus => {
-      this.votingStatus = votingStatus
-    })
-  }
-
-  goNextVoting() {
-    if (this.currentVotingPage < this.votingList.length) this.currentVotingPage++
-    else this.currentVotingPage = 1
-  }
-
-  vote() {
-    this.currentVoting.candidates.forEach(candidate => {
-      candidate.votes += +this.currentVotingForm.get(candidate.name)?.value
-    })
-    console.log(this.currentVoting.candidates)
-    this.snackBarService.openSnackBar('Votación Exitosa')
-    this.currentVotingForm.reset()
-    this.goNextVoting()
-  }
-
-  generateVotingForms() {
-    this.votingList.forEach(voting => {
-      this.votingForms.splice(0, this.votingList.length) //delete all elements from the array
-      const formGroup = new FormGroup({})
-      voting.candidates.forEach(candidate => formGroup.addControl(candidate.name, new FormControl(false)))
-      this.votingForms.push(formGroup)
-    })
+    this.votingStatusSubscription = this.votingService
+      .getVotingStatus()
+      .subscribe(status => (this.votingStatus = status))
   }
 
   ngOnDestroy(): void {
@@ -101,7 +112,7 @@ export class VotingPageComponent implements OnDestroy {
     this.votingStatus = 'undefined'
     this.votingListSubscription = new Subscription()
     this.votingStatusSubscription = new Subscription()
-    this.subscribeToVotingList()
     this.subscribeToVotingStatus()
+    this.subscribeToVotingList()
   }
 }

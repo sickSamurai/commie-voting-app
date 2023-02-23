@@ -50,6 +50,10 @@ export class VotingService {
     this.firebaseService.addVoting(votingDTO)
   }
 
+  updateVoting(voting: VotingDTO) {
+    this.firebaseService.updateVoting(voting)
+  }
+
   getVotingList = () => this.votingList.asObservable()
 
   setVotingName(name: string) {

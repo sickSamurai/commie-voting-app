@@ -1,6 +1,14 @@
 import { Injectable } from '@angular/core'
 import { Auth } from '@angular/fire/auth'
-import { collectionData, CollectionReference, doc, docData, Firestore, setDoc } from '@angular/fire/firestore'
+import {
+  collectionData,
+  CollectionReference,
+  doc,
+  docData,
+  Firestore,
+  setDoc,
+  updateDoc
+} from '@angular/fire/firestore'
 import { signInWithEmailAndPassword } from '@firebase/auth'
 import {
   addDoc,
@@ -27,6 +35,7 @@ export class FirebaseService {
     fromFirestore(snapshot: QueryDocumentSnapshot, options: SnapshotOptions) {
       const data = snapshot.data(options)
       return {
+        id: snapshot.id,
         name: data['name'],
         candidates: data['candidates'],
         numberOfCandidates: data['numberOfCandidates'],
@@ -52,6 +61,12 @@ export class FirebaseService {
 
   addVoting(voting: VotingDTO) {
     addDoc(this.votingCollection, { ...voting })
+  }
+
+  updateVoting(voting: VotingDTO) {
+    if (voting.id === undefined) throw new Error('id is undefined')
+    const docRef = doc(this.votingCollection, voting.id)
+    updateDoc(docRef, { ...voting })
   }
 
   async login() {
