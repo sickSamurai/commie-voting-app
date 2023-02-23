@@ -2,7 +2,7 @@
   "arrowParens": "avoid",
   "bracketSameLine": true,
   "jsxSingleQuote": true,
-  "printWidth": 110,
+  "printWidth": 120,
   "semi": false,
   "quoteProps": "preserve",
   "singleQuote": true,

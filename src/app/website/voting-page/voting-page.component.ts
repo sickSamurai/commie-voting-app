@@ -6,6 +6,7 @@ import { VotingStatus } from 'src/app/models/VotingStatus'
 import { VotingService } from 'src/app/services/voting.service'
 
 import { VotingDTO } from '../../models/VotingDTO'
+import { DialogService } from '../../services/dialog.service'
 import { SnackBarService } from '../../services/snack-bar.service'
 
 @Component({
@@ -71,12 +72,27 @@ export class VotingPageComponent implements OnDestroy {
     }
   }
 
-  vote() {
+  saveVote() {
     if (this.currentVoting === undefined) throw new Error('current voting is undefined')
-    this.currentVoting.candidates.forEach(candidate => (candidate.votes += this.getCandidateVote(candidate)))
     this.votingService.updateVoting(this.currentVoting)
     this.snackBarService.openSnackBar('Votación Exitosa')
     this.goNextVoting()
+  }
+
+  confirmBlankVote() {
+    const message = '¿Estás seguro que deseas votar en blanco?'
+    this.dialogService.getResponse(message).subscribe(result => {
+      if (result) this.saveVote()
+    })
+  }
+
+  vote() {
+    if (this.currentVoting === undefined) throw new Error('current voting is undefined')
+    if (this.currentVotes === 0) this.confirmBlankVote()
+    else {
+      this.currentVoting.candidates.forEach(candidate => (candidate.votes += this.getCandidateVote(candidate)))
+      this.saveVote()
+    }
   }
 
   generateVotingForms() {
@@ -106,7 +122,11 @@ export class VotingPageComponent implements OnDestroy {
     this.votingStatusSubscription.unsubscribe()
   }
 
-  constructor(private votingService: VotingService, private snackBarService: SnackBarService) {
+  constructor(
+    private votingService: VotingService,
+    private snackBarService: SnackBarService,
+    private dialogService: DialogService
+  ) {
     this.votingList = []
     this.votingForms = []
     this.votingStatus = 'undefined'

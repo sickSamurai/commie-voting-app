@@ -1,9 +1,16 @@
 <div>
-  <ng-container *ngIf="votingCreated; else creatingVoting">
-    <app-candidates-form (votingCreated)="showVotingForm()"></app-candidates-form>
-  </ng-container>
+  <mat-card *ngIf="votingStatus === 'started'; else canCreate">
+    <mat-card-content>
+      <h3>Hay una o más votaciones en curso, debes terminarlas para poder crear más</h3>
+    </mat-card-content>
+  </mat-card>
+  <ng-template #canCreate>
+    <ng-container *ngIf="votingCreated; else creatingVoting">
+      <app-candidates-form (votingCreated)="showVotingForm()"></app-candidates-form>
+    </ng-container>
 
-  <ng-template #creatingVoting>
-    <app-voting-creation-form (votingCreated)="showCandidatesForm()"></app-voting-creation-form>
+    <ng-template #creatingVoting>
+      <app-voting-creation-form (votingCreated)="showCandidatesForm()"></app-voting-creation-form>
+    </ng-template>
   </ng-template>
 </div>
