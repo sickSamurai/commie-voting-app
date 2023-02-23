@@ -67,6 +67,7 @@ export class VotingPageComponent implements OnDestroy {
     if (this.currentVotingPage < this.votingList.length) {
       this.currentVotingPage++
     } else {
+      this.dialogService.showInformation('Ya has participado en todas las votaciones')
       this.currentVotingPage = 1
       this.currentVotingForm.reset()
     }

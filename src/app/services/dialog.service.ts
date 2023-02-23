@@ -2,7 +2,8 @@ import { Injectable } from '@angular/core'
 import { MatDialog } from '@angular/material/dialog'
 import { map } from 'rxjs'
 
-import { DialogComponent } from '../shared/components/dialog/dialog.component'
+import { ConfirmationDialogComponent } from '../shared/components/confirmation-dialog/confirmation-dialog.component'
+import { InfoDialogComponent } from '../shared/components/info-dialog/info-dialog.component'
 
 @Injectable({
   providedIn: 'root'
@@ -10,8 +11,13 @@ import { DialogComponent } from '../shared/components/dialog/dialog.component'
 export class DialogService {
   getResponse(message: string) {
     const data = { message }
-    const dialogRef = this.dialog.open(DialogComponent, { data })
+    const dialogRef = this.dialog.open(ConfirmationDialogComponent, { data })
     return dialogRef.afterClosed().pipe(map(result => result as boolean))
+  }
+
+  showInformation(message: string) {
+    const data = { message }
+    this.dialog.open(InfoDialogComponent, { data })
   }
 
   constructor(private dialog: MatDialog) {}

@@ -56,6 +56,10 @@ export class VotingService {
 
   getVotingList = () => this.votingList.asObservable()
 
+  sort(voting: VotingDTO) {
+    return voting.candidates.sort((a, b) => a.votes - b.votes)
+  }
+
   setVotingName(name: string) {
     this.voting.setName(name)
   }

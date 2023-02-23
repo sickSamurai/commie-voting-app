@@ -10,7 +10,8 @@ import { VotingCreationFormComponent } from './components/voting-creation-form/v
 import { CreationPageComponent } from './pages/creation-page/creation-page.component'
 import { ResultsPageComponent } from './pages/results-page/results-page.component'
 import { VotingManagementPageComponent } from './pages/voting-management-page/voting-management-page.component';
-import { LayoutComponent } from './components/layout/layout.component'
+import { LayoutComponent } from './components/layout/layout.component';
+import { ResultsTableComponent } from './components/results-table/results-table.component'
 
 @NgModule({
   declarations: [
@@ -20,7 +21,8 @@ import { LayoutComponent } from './components/layout/layout.component'
     CreationPageComponent,
     ResultsPageComponent,
     VotingManagementPageComponent,
-    LayoutComponent
+    LayoutComponent,
+    ResultsTableComponent
   ],
   imports: [CommonModule, AdminRoutingModule, SharedModule, FormsModule, ReactiveFormsModule]
 })
