@@ -1,0 +1,8 @@
+<mat-list *ngIf="voting !== undefined">
+  <mat-list-item
+    *ngFor="let candidate of candidatesList"
+    [ngClass]="{ 'winner': candidate.isWinner, 'looser': !candidate.isWinner }">
+    <span matListItemTitle>{{ candidate.name }}</span>
+    <span matListItemLine>{{ candidate.votes }}</span>
+  </mat-list-item>
+</mat-list>

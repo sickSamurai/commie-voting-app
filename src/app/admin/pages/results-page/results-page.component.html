@@ -3,11 +3,24 @@
     <mat-card-content> <h3>La votación sigue en curso</h3> </mat-card-content>
   </mat-card>
 
-  <mat-card *ngSwitchCase="'finished'">
+  <mat-card class="results-container" *ngSwitchCase="'finished'">
     <mat-card-header>
       <mat-card-title>Resultados</mat-card-title>
     </mat-card-header>
-    <mat-card-content> <app-results-table></app-results-table> </mat-card-content>
+    <mat-card-content>
+      <app-results-list *ngIf="selectedVoting !== undefined" [voting]="selectedVoting"></app-results-list>
+      <ng-container *ngIf="votingList.length > 1">
+        <mat-form-field appearance="fill">
+          <mat-label>Lista de votaciones</mat-label>
+          <mat-select [formControl]="selectedVotingFormControl">
+            <mat-option *ngFor="let voting of votingList" [value]="voting">
+              {{ voting.name }}
+            </mat-option>
+          </mat-select>
+          <mat-hint>Selecciona la votación que quieres ver</mat-hint>
+        </mat-form-field>
+      </ng-container>
+    </mat-card-content>
   </mat-card>
 
   <mat-card *ngSwitchDefault>

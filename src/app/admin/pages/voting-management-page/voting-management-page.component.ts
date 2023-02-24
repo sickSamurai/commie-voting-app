@@ -1,6 +1,7 @@
 import { Component } from '@angular/core'
 import { VotingService } from 'src/app/services/voting.service'
 
+import { DialogService } from '../../../services/dialog.service'
 import { SnackBarService } from '../../../services/snack-bar.service'
 
 @Component({
@@ -23,9 +24,18 @@ export class VotingManagementPageComponent {
   }
 
   deleteAllVoting() {
-    if (this.votingService.resetVoting()) this.snackBarService.openSnackBar('Votación(es) eliminada con éxito')
-    else this.snackBarService.openSnackBar('Debes finalizar las votaciones activas antes de poder eliminarlas')
+    this.dialogService
+      .getResponse('¿Seguro que quieres hacer un reset? Esto borrara todas las votaciones de la BD')
+      .subscribe(response => {
+        if (!response) return
+        if (this.votingService.resetVoting()) this.snackBarService.openSnackBar('Votación(es) eliminada con éxito')
+        else this.snackBarService.openSnackBar('Debes finalizar las votaciones activas antes de poder eliminarlas')
+      })
   }
 
-  constructor(private votingService: VotingService, private snackBarService: SnackBarService) {}
+  constructor(
+    private votingService: VotingService,
+    private snackBarService: SnackBarService,
+    private dialogService: DialogService
+  ) {}
 }
