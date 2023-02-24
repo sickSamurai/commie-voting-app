@@ -66,6 +66,7 @@ export class VotingPageComponent implements OnDestroy {
     if (this.currentVotingForm === undefined) throw new Error('current voting form is undefined')
     if (this.currentVotingPage < this.votingList.length) {
       this.currentVotingPage++
+      this.snackBarService.openSnackBar('Votación Exitosa')
     } else {
       this.dialogService.showInformation('Ya has participado en todas las votaciones')
       this.currentVotingPage = 1
@@ -76,7 +77,6 @@ export class VotingPageComponent implements OnDestroy {
   saveVote() {
     if (this.currentVoting === undefined) throw new Error('current voting is undefined')
     this.votingService.updateVoting(this.currentVoting)
-    this.snackBarService.openSnackBar('Votación Exitosa')
     this.goNextVoting()
   }
 
@@ -116,6 +116,13 @@ export class VotingPageComponent implements OnDestroy {
     this.votingStatusSubscription = this.votingService
       .getVotingStatus()
       .subscribe(status => (this.votingStatus = status))
+  }
+
+  get candidatesContainerClass() {
+    if (this.currentVoting === undefined) throw new Error('currentVoting is undefined')
+    if (this.currentVoting.candidates.length <= 5) return 'standard-container'
+    else if (this.currentVoting.candidates.length <= 10) return 'two-columns-grid'
+    else return 'three-columns-grid'
   }
 
   ngOnDestroy(): void {

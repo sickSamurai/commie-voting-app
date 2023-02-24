@@ -6,7 +6,11 @@ div.main-container {
   align-items: center;
 }
 
-mat-card-content {
+mat-card.voting-container {
+  width: 70vw;
+}
+
+mat-card-content.standard-container {
   display: flex;
   flex-direction: column;
   gap: 16px;
@@ -14,4 +18,19 @@ mat-card-content {
 
 button {
   text-transform: uppercase;
+}
+
+mat-card-content.two-columns-grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 16px;
+  max-height: 80vh;
+}
+
+mat-card-content.three-columns-grid {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 16px;
+  overflow: auto;
+  max-height: 80vh;
 }

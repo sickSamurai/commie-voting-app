@@ -16,8 +16,8 @@ export class VotingService {
   votingStatus: BehaviorSubject<VotingStatus>
 
   subscribeToStatusCollection() {
-    this.firebaseService.getStatus().subscribe(document => {
-      if (document) this.votingStatus.next(document['status'])
+    this.firebaseService.getStatus().subscribe(status => {
+      if (document) this.votingStatus.next(status['value'])
     })
   }
 
@@ -50,14 +50,18 @@ export class VotingService {
     this.firebaseService.addVoting(votingDTO)
   }
 
+  getVotingList = () => this.votingList.asObservable()
+
   updateVoting(voting: VotingDTO) {
     this.firebaseService.updateVoting(voting)
   }
 
-  getVotingList = () => this.votingList.asObservable()
-
-  sort(voting: VotingDTO) {
-    return voting.candidates.sort((a, b) => a.votes - b.votes)
+  resetVoting = () => {
+    if (this.votingStatus.getValue() === 'finished') {
+      this.firebaseService.deleteAllVoting()
+      this.firebaseService.setStatus('undefined')
+      return true
+    } else return false
   }
 
   setVotingName(name: string) {

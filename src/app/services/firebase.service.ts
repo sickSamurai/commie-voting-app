@@ -3,20 +3,15 @@ import { Auth } from '@angular/fire/auth'
 import {
   collectionData,
   CollectionReference,
+  deleteDoc,
   doc,
   docData,
   Firestore,
   setDoc,
-  updateDoc
+  updateDoc,
 } from '@angular/fire/firestore'
 import { signInWithEmailAndPassword } from '@firebase/auth'
-import {
-  addDoc,
-  collection,
-  FirestoreDataConverter,
-  QueryDocumentSnapshot,
-  SnapshotOptions
-} from '@firebase/firestore'
+import { addDoc, collection, FirestoreDataConverter, QueryDocumentSnapshot, SnapshotOptions } from '@firebase/firestore'
 
 import { VotingDTO } from '../models/VotingDTO'
 import { VotingStatus } from '../models/VotingStatus'
@@ -25,7 +20,6 @@ import { VotingStatus } from '../models/VotingStatus'
   providedIn: 'root'
 })
 export class FirebaseService {
-  statusCollection: CollectionReference
   votingCollection: CollectionReference<VotingDTO>
 
   votingConverter: FirestoreDataConverter<VotingDTO> = {
@@ -45,13 +39,12 @@ export class FirebaseService {
   }
 
   setStatus(status: VotingStatus) {
-    console.log('You call me to set the status')
-    const docRef = doc(this.firestore, 'status/single')
-    setDoc(docRef, { status })
+    const docRef = doc(this.firestore, 'status/unique-status')
+    setDoc(docRef, { value: status })
   }
 
   getStatus() {
-    const docRef = doc(this.firestore, 'status/single')
+    const docRef = doc(this.firestore, 'status/unique-status')
     return docData(docRef)
   }
 
@@ -69,13 +62,18 @@ export class FirebaseService {
     updateDoc(docRef, { ...voting })
   }
 
+  deleteAllVoting() {
+    this.getVotingList().subscribe(votingList =>
+      votingList.forEach(voting => deleteDoc(doc(this.votingCollection, voting.id!)))
+    )
+  }
+
   async login() {
     await signInWithEmailAndPassword(this.auth, 'ldmckkb@gmail.com', '123456789')
   }
 
   constructor(private firestore: Firestore, private auth: Auth) {
     this.login()
-    this.statusCollection = collection(this.firestore, 'status')
-    this.votingCollection = collection(this.firestore, 'voting-list').withConverter(this.votingConverter)
+    this.votingCollection = collection(this.firestore, 'commie-voting').withConverter(this.votingConverter)
   }
 }

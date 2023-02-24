@@ -1,7 +1,7 @@
 <div [ngSwitch]="votingStatus" class="main-container">
   <div *ngSwitchCase="'started'">
     <form *ngIf="currentVoting && currentVotingForm" [formGroup]="currentVotingForm" (ngSubmit)="vote()">
-      <mat-card>
+      <mat-card class="voting-container">
         <mat-card-header>
           <mat-card-title>{{ currentVoting.name }}</mat-card-title>
           <mat-card-subtitle>
@@ -9,7 +9,7 @@
             <p>{{ remainingVotesMessage }}</p>
           </mat-card-subtitle>
         </mat-card-header>
-        <mat-card-content>
+        <mat-card-content [class]="candidatesContainerClass">
           <mat-checkbox *ngFor="let candidate of currentVoting.candidates" [formControlName]="candidate.name">
             {{ candidate.name }}
           </mat-checkbox>
@@ -22,13 +22,13 @@
   </div>
 
   <mat-card *ngSwitchCase="'finished'">
-    <mat-card-content>
+    <mat-card-content class="standard-container">
       <h3>¡Las votaciones ya terminaron!</h3>
     </mat-card-content>
   </mat-card>
 
   <mat-card *ngSwitchDefault>
-    <mat-card-content>
+    <mat-card-content class="standard-container">
       <h3>¡No hay votaciones creadas aun!</h3>
     </mat-card-content>
   </mat-card>

@@ -22,5 +22,10 @@ export class VotingManagementPageComponent {
     else this.snackBarService.openSnackBar('No hay ninguna votación activa')
   }
 
+  deleteAllVoting() {
+    if (this.votingService.resetVoting()) this.snackBarService.openSnackBar('Votación(es) eliminada con éxito')
+    else this.snackBarService.openSnackBar('Debes finalizar las votaciones activas antes de poder eliminarlas')
+  }
+
   constructor(private votingService: VotingService, private snackBarService: SnackBarService) {}
 }

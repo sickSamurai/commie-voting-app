@@ -35,7 +35,7 @@ export class CandidatesFormComponent implements OnDestroy {
 
   addCandidate() {
     if (this.nameFormControl.invalid) return
-    this.candidates.push({ name: this.nameFormControl.value || 'null', votes: 0 })
+    this.candidates.push({ name: this.nameFormControl.value || 'null', votes: 0, isWinner: false })
     this.remainingCandidates -= 1
   }
 
