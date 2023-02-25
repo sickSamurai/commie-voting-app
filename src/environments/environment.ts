@@ -1,12 +1,12 @@
 export const environment = {
   firebase: {
-    projectId: 'commie-voting-app',
-    appId: '1:673825273731:web:2d34df57a7308a289028b6',
-    storageBucket: 'commie-voting-app.appspot.com',
-    apiKey: 'AIzaSyA8scGxjiWLJ4CSEYPhEew0oCeeLd9BWlQ',
-    authDomain: 'commie-voting-app.firebaseapp.com',
-    messagingSenderId: '673825273731',
-    measurementId: 'G-BBGVL9TK23',
+    apiKey: 'AIzaSyCXQBBc_C53CBtXE71MBb-rlwzK1cEL8hs',
+    authDomain: 'commie-voting-app-7841d.firebaseapp.com',
+    projectId: 'commie-voting-app-7841d',
+    storageBucket: 'commie-voting-app-7841d.appspot.com',
+    messagingSenderId: '1067157204556',
+    appId: '1:1067157204556:web:a00dfa6085f1b1035b4ee9',
+    measurementId: 'G-F31PZE5CBW'
   },
-  test: false,
-};
+  test: false
+}

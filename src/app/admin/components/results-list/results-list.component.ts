@@ -1,4 +1,5 @@
-import { Component, Input, OnDestroy } from '@angular/core'
+import { Component, Input, OnChanges, OnDestroy, SimpleChanges } from '@angular/core'
+import { Candidate } from 'src/app/models/Candidate'
 
 import { VotingDTO } from '../../../models/VotingDTO'
 import { VotingService } from '../../../services/voting.service'
@@ -8,21 +9,19 @@ import { VotingService } from '../../../services/voting.service'
   templateUrl: './results-list.component.html',
   styleUrls: ['./results-list.component.scss']
 })
-export class ResultsListComponent implements OnDestroy {
+export class ResultsListComponent implements OnDestroy, OnChanges {
   @Input() voting?: VotingDTO
-
-  get candidatesList() {
-    if (this.voting === undefined) throw new Error('voting is undefined')
-    const candidates = this.voting.candidates.sort((a, b) => a.votes - b.votes)
-    candidates.forEach((candidate, index) => {
-      if (this.voting === undefined) throw new Error('voting is undefined')
-      candidate.isWinner = index < this.voting.numberOfWinners
-    })
-    this.votingService.updateVoting({ ...this.voting, candidates })
-    return candidates
-  }
+  candidates: Candidate[] = []
 
   ngOnDestroy() {}
+
+  ngOnChanges(changes: SimpleChanges): void {
+    const currentVoting = changes['voting'].currentValue as VotingDTO
+    this.candidates = currentVoting.candidates.sort((a, b) => a.votes - b.votes).reverse()
+    this.candidates.forEach((candidate, index) => {
+      candidate.isWinner = index < currentVoting.numberOfWinners
+    })
+  }
 
   constructor(private votingService: VotingService) {}
 }
