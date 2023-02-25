@@ -27,9 +27,15 @@
     </mat-card-content>
   </mat-card>
 
-  <mat-card *ngSwitchDefault>
+  <mat-card *ngSwitchCase="'undefined'">
     <mat-card-content class="standard-container">
       <h3>¡No hay votaciones creadas aun!</h3>
+    </mat-card-content>
+  </mat-card>
+
+  <mat-card *ngSwitchDefault>
+    <mat-card-content class="standard-container">
+      <h3>¡Cargando!</h3>
     </mat-card-content>
   </mat-card>
 </div>

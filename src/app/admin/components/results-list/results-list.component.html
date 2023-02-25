@@ -1,8 +1,33 @@
-<mat-list *ngIf="voting !== undefined">
-  <mat-list-item
-    *ngFor="let candidate of candidates; let i = index"
-    [ngClass]="{ 'winner': candidate.isWinner, 'looser': !candidate.isWinner }">
-    <span matListItemTitle> {{ i }}. {{ candidate.name }}</span>
-    <span matListItemLine>Votos: {{ candidate.votes }}</span>
-  </mat-list-item>
-</mat-list>
+<div>
+  <table *ngIf="voting !== undefined" mat-table [dataSource]="candidates" class="mat-elevation-z8">
+    <ng-container matColumnDef="position">
+      <th mat-header-cell *matHeaderCellDef>No.</th>
+      <td mat-cell *matCellDef="let element; let i = index" [class.winner]="element.isWinner">
+        {{ i + 1 }}
+      </td>
+    </ng-container>
+
+    <!-- Name Column -->
+    <ng-container matColumnDef="name">
+      <th mat-header-cell *matHeaderCellDef>Nombre</th>
+      <td mat-cell *matCellDef="let element" [class.winner]="element.isWinner">{{ element.name }}</td>
+    </ng-container>
+
+    <!-- Votes Column -->
+    <ng-container matColumnDef="votes">
+      <th mat-header-cell *matHeaderCellDef>Votos</th>
+      <td mat-cell *matCellDef="let element" [class.winner]="element.isWinner">{{ element.votes }}</td>
+    </ng-container>
+
+    <!-- isWinner Column -->
+    <ng-container matColumnDef="isWinner">
+      <th mat-header-cell *matHeaderCellDef>¿Gano?</th>
+      <td mat-cell *matCellDef="let element">
+        <mat-icon [color]="element.isWinner ? 'accent' : 'warn'">{{ element.isWinner ? 'done' : 'close' }}</mat-icon>
+      </td>
+    </ng-container>
+
+    <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+    <tr mat-row *matRowDef="let row; columns: displayedColumns"></tr>
+  </table>
+</div>

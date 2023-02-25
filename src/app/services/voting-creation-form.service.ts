@@ -24,7 +24,7 @@ export class VotingCreationFormService {
     return (control: AbstractControl): ValidationErrors | null => {
       const numberOfCandidates = +control.parent?.get('numberOfCandidates')?.value
       const numberOfWinners = +control.value
-      return numberOfCandidates < numberOfWinners ? { numberOfWinners: true } : null
+      return numberOfCandidates <= numberOfWinners ? { numberOfWinners: true } : null
     }
   }
 

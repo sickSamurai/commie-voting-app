@@ -1,15 +1,17 @@
-div.multiple-results-container {
-  display: flex;
-  flex-direction: column;
-  gap: 4px;
-}
-
 .winner {
-  background-color: green;
-  color: white;
+  font-weight: 600;
 }
 
-.looser {
-  background-color: red;
-  color: white;
+table {
+  table-layout: fixed;
+}
+
+div {
+  max-height: 60vh;
+  overflow: auto;
+}
+
+th,
+td {
+  width: 20px;
 }

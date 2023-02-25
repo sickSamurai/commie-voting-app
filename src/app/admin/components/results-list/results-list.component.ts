@@ -1,19 +1,17 @@
-import { Component, Input, OnChanges, OnDestroy, SimpleChanges } from '@angular/core'
+import { Component, Input, OnChanges, SimpleChanges } from '@angular/core'
 import { Candidate } from 'src/app/models/Candidate'
 
 import { VotingDTO } from '../../../models/VotingDTO'
-import { VotingService } from '../../../services/voting.service'
 
 @Component({
   selector: 'app-results-list',
   templateUrl: './results-list.component.html',
   styleUrls: ['./results-list.component.scss']
 })
-export class ResultsListComponent implements OnDestroy, OnChanges {
+export class ResultsListComponent implements OnChanges {
   @Input() voting?: VotingDTO
   candidates: Candidate[] = []
-
-  ngOnDestroy() {}
+  displayedColumns = ['position', 'name', 'votes', 'isWinner']
 
   ngOnChanges(changes: SimpleChanges): void {
     const currentVoting = changes['voting'].currentValue as VotingDTO
@@ -22,6 +20,4 @@ export class ResultsListComponent implements OnDestroy, OnChanges {
       candidate.isWinner = index < currentVoting.numberOfWinners
     })
   }
-
-  constructor(private votingService: VotingService) {}
 }

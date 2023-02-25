@@ -1,7 +1,14 @@
-mat-card.results-container {
+div.results-container {
   width: 70vw;
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
 }
 
 mat-form-field {
-  width: 70%;
+  width: 100%;
+}
+
+a {
+  text-transform: uppercase;
 }

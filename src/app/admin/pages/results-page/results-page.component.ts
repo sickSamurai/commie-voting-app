@@ -20,15 +20,15 @@ export class ResultsPageComponent implements OnDestroy {
   votingListSubscription: Subscription
   selectedVotingFormControlSubscription: Subscription
 
-  setStatus = (status: VotingStatus) => (this.votingStatus = status)
-
   subscribeToVotingStatus() {
-    this.votingStatusSubscription = this.votingService.getVotingStatus().subscribe(this.setStatus)
+    this.votingStatusSubscription = this.votingService
+      .getVotingStatus()
+      .subscribe(status => (this.votingStatus = status))
   }
 
   subscribeToVotingList() {
     this.votingListSubscription = this.votingService.getVotingList().subscribe(votingList => {
-      this.selectedVoting = votingList[0]
+      if (votingList.length === 1) this.selectedVoting = votingList[0]
       this.votingList = votingList
     })
   }

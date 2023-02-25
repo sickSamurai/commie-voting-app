@@ -15,8 +15,8 @@ export class DialogService {
     return dialogRef.afterClosed().pipe(map(result => result as boolean))
   }
 
-  showInformation(message: string) {
-    const data = { message }
+  showInformation(title: string, message: string) {
+    const data = { title, message }
     this.dialog.open(InfoDialogComponent, { data })
   }
 

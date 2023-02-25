@@ -27,12 +27,14 @@ export class VotingService {
 
   startVoting() {
     if (this.votingList.getValue().length === 0 || this.votingStatus.getValue() === 'started') return false
+    this.votingStatus.next('loading')
     this.firebaseService.setStatus('started')
     return true
   }
 
   finishVoting() {
     if (this.votingStatus.getValue() !== 'started') return false
+    this.votingStatus.next('loading')
     this.firebaseService.setStatus('finished')
     return true
   }

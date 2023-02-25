@@ -1,9 +1,34 @@
-<mat-card>
-  <mat-card-content>
-    <div class="button-container">
-      <button (click)="startVoting()" mat-flat-button color="primary">Iniciar</button>
-      <button (click)="finishVoting()" mat-flat-button color="accent">Finalizar</button>
-      <button (click)="deleteAllVoting()" mat-flat-button color="warn">Reiniciar</button>
-    </div>
-  </mat-card-content>
-</mat-card>
+<div class="main-container">
+  <mat-card *ngIf="votingList.length > 0; else votingListEmpty">
+    <mat-card-header>
+      <h2 matCardTitle>Votaciones Habilitadas</h2>
+    </mat-card-header>
+    <mat-card-content>
+      <mat-list>
+        <mat-list-item *ngFor="let voting of votingList">
+          {{ voting.name }}
+        </mat-list-item>
+      </mat-list>
+    </mat-card-content>
+  </mat-card>
+
+  <ng-template #votingListEmpty>
+    <mat-card>
+      <mat-card-header>
+        <h2 matCardTitle>No hay votaciones habilitadas, intenta crear una!</h2>
+      </mat-card-header>
+    </mat-card>
+  </ng-template>
+
+  <mat-card>
+    <mat-card-content>
+      <div class="button-container">
+        <a routerLink="/admin/creation" mat-button>Crear Votación</a>
+        <button (click)="startVoting()" mat-button>Iniciar Votaciones</button>
+        <button (click)="finishVoting()" mat-button>Finalizar Votaciones</button>
+        <a routerLink="/admin/results" mat-button>Ver Resultados</a>
+        <button (click)="deleteAllVoting()" mat-button color="warn">Borrar Votaciones</button>
+      </div>
+    </mat-card-content>
+  </mat-card>
+</div>

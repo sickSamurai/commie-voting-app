@@ -68,7 +68,7 @@ export class VotingPageComponent implements OnDestroy {
       this.currentVotingPage++
       this.snackBarService.openSnackBar('Votación Exitosa')
     } else {
-      this.dialogService.showInformation('Ya has participado en todas las votaciones')
+      this.dialogService.showInformation('Votación Registrada', 'Ya has participado en todas las votaciones')
       this.currentVotingPage = 1
       this.currentVotingForm.reset()
     }

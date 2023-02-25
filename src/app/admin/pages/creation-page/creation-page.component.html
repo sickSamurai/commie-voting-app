@@ -4,6 +4,7 @@
       <h3>Hay una o más votaciones en curso, debes terminarlas para poder crear más</h3>
     </mat-card-content>
   </mat-card>
+
   <ng-template #canCreate>
     <ng-container *ngIf="votingCreated; else creatingVoting">
       <app-candidates-form (votingCreated)="showVotingForm()"></app-candidates-form>

@@ -1,3 +1,9 @@
+div.main-container {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
 div.button-container {
   width: 100%;
   display: flex;
